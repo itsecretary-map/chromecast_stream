@@ -83,7 +83,8 @@ body {
 
 /* Slideshow Column */
 .slideshow {
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.7) !important;
+  background-image: none !important;
   padding: 20px;
   border-radius: 12px;
   border: 2px solid black;
