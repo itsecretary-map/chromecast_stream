@@ -25,6 +25,19 @@ export function getImagePath(imageName) {
   return `./images/slideshow/${imageName}`;
 }
 
+// Function to get GitHub Pages compatible QR code image paths
+export function getQrImagePath(imageName) {
+  const isGitHubPages = typeof window !== 'undefined' && (
+    window.location.hostname === 'itsecretary-map.github.io' || 
+    window.location.pathname.includes('/chromecast_stream/')
+  );
+  
+  if (isGitHubPages) {
+    return `/chromecast_stream/images/qr-codes/${imageName}`;
+  }
+  return `./images/qr-codes/${imageName}`;
+}
+
 // Quranic Ayat/Hadith List (Arabic + Translation)
 export const ayatHadithList = [
   { ar: 'إِنَّ الصَّلَاةَ تَنْهَىٰ عَنِ الْفَحْشَاءِ وَالْمُنكَرِ', en: 'Indeed, prayer prohibits immorality and wrongdoing. (Quran 29:45)' },
@@ -40,11 +53,24 @@ export const ayatHadithList = [
 ];
 
 // QR Code Images and Labels
-// Using local images for better reliability - only two QR codes to reduce row height
-export const qrImageUrls = {
-  mapWebsite: './images/qr-codes/mapitt.png',
-  communityWhatsApp: './images/qr-codes/whatsapp_group.png',
-};
+// Using GitHub Pages compatible paths - only two QR codes to reduce row height
+export function getQrImageUrls() {
+  const isGitHubPages = typeof window !== 'undefined' && (
+    window.location.hostname === 'itsecretary-map.github.io' || 
+    window.location.pathname.includes('/chromecast_stream/')
+  );
+  
+  if (isGitHubPages) {
+    return {
+      mapWebsite: '/chromecast_stream/images/qr-codes/mapitt.png',
+      communityWhatsApp: '/chromecast_stream/images/qr-codes/whatsapp_group.png',
+    };
+  }
+  return {
+    mapWebsite: './images/qr-codes/mapitt.png',
+    communityWhatsApp: './images/qr-codes/whatsapp_group.png',
+  };
+}
 
 export const qrImageLabels = {
   mapWebsite: 'MAP Website',

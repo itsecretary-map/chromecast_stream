@@ -2,12 +2,12 @@
 // Rotates through images from GitHub repository and displays announcements
 
 import { 
-  ayatHadithList,
-  qrImageUrls,
-  qrImageLabels,
-  githubConfig,
-  slideshowImgUrls,
-  getImagePath
+  slideshowImgUrls, 
+  getImagePath, 
+  ayatHadithList, 
+  getQrImageUrls,
+  qrImageLabels, 
+  githubConfig 
 } from './config.js';
 
 // === BACKGROUND IMAGE LOADING ===
@@ -472,32 +472,35 @@ fetch(`https://api.aladhan.com/v1/timingsByAddress?address=${zipcode},${country}
 
 // Map for QR code display names
 const qrList = document.querySelector('.qr-list');
-if (qrList && qrImageUrls && typeof qrImageUrls === 'object') {
-  qrList.innerHTML = '';
-  Object.entries(qrImageUrls).forEach(([key, url], i) => {
-    const wrapper = document.createElement('div');
-    wrapper.style.display = 'flex';
-    wrapper.style.flexDirection = 'column';
-    wrapper.style.alignItems = 'center';
-    wrapper.style.marginBottom = '18px';
+if (qrList) {
+  const qrImageUrls = getQrImageUrls();
+  if (qrImageUrls && typeof qrImageUrls === 'object') {
+    qrList.innerHTML = '';
+    Object.entries(qrImageUrls).forEach(([key, url], i) => {
+      const wrapper = document.createElement('div');
+      wrapper.style.display = 'flex';
+      wrapper.style.flexDirection = 'column';
+      wrapper.style.alignItems = 'center';
+      wrapper.style.marginBottom = '18px';
 
-    const label = document.createElement('div');
-    label.textContent = qrImageLabels[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase());
-    label.style.color = '#ffd600';
-    label.style.fontSize = '1.1rem';
-    label.style.marginBottom = '8px';
-    label.style.textAlign = 'center';
-    label.style.wordBreak = 'break-word';
+      const label = document.createElement('div');
+      label.textContent = qrImageLabels[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase());
+      label.style.color = '#ffd600';
+      label.style.fontSize = '1.1rem';
+      label.style.marginBottom = '8px';
+      label.style.textAlign = 'center';
+      label.style.wordBreak = 'break-word';
 
-    const img = document.createElement('img');
-    img.className = 'qr-img';
-    img.src = url;
-    img.alt = label.textContent;
+      const img = document.createElement('img');
+      img.className = 'qr-img';
+      img.src = url;
+      img.alt = label.textContent;
 
-    wrapper.appendChild(label);
-    wrapper.appendChild(img);
-    qrList.appendChild(wrapper);
-  });
+      wrapper.appendChild(label);
+      wrapper.appendChild(img);
+      qrList.appendChild(wrapper);
+    });
+  }
 }
 
 // Initialize everything when the page loads
