@@ -163,14 +163,18 @@ async function fetchGitHubImages() {
     
     const files = await response.json();
     console.log('GitHub API response:', files);
+    console.log('📁 All files returned from GitHub:', files.map(f => f.name));
     
-    // Filter for image files only
+    // Filter for image files only, excluding background image
     const imageFiles = files.filter(file => {
       const extension = file.name.toLowerCase().split('.').pop();
-      return ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(extension);
+      const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(extension);
+      const isNotBackground = !file.name.includes('CCA_5344-HDR');
+      console.log(`🔍 File: ${file.name}, isImage: ${isImage}, isNotBackground: ${isNotBackground}`);
+      return isImage && isNotBackground;
     });
     
-    console.log(`Found ${imageFiles.length} image files:`, imageFiles);
+    console.log(`✅ Found ${imageFiles.length} valid slideshow image files:`, imageFiles);
     
     // Convert to image URLs using raw GitHub URLs
     const githubImages = imageFiles.map(file => ({
@@ -335,6 +339,9 @@ function nextImage() {
 async function initializeSlideshow() {
   try {
     console.log('Initializing slideshow with GitHub images...');
+    
+    // Clear cache to ensure fresh data
+    clearImageCache();
     
     const githubImages = await getCachedOrFetchImages();
     
