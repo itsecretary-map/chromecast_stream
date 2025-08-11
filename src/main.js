@@ -6,11 +6,16 @@ import {
   qrImageUrls,
   qrImageLabels,
   githubConfig,
-  slideshowImgUrls
+  slideshowImgUrls,
+  getImagePath
 } from './config.js';
 
 // === BACKGROUND IMAGE LOADING ===
 function loadBackgroundImage() {
+  // Detect if we're running on GitHub Pages or locally
+  const isGitHubPages = window.location.hostname === 'itsecretary-map.github.io' || 
+                       window.location.pathname.includes('/chromecast_stream/');
+  
   // Try multiple possible paths for the background image
   const possiblePaths = [
     './CCA_5344-HDR.jpg',
@@ -18,6 +23,12 @@ function loadBackgroundImage() {
     '/CCA_5344-HDR.jpg',
     '../CCA_5344-HDR.jpg'
   ];
+  
+  // Add GitHub Pages specific paths if needed
+  if (isGitHubPages) {
+    possiblePaths.unshift('/chromecast_stream/CCA_5344-HDR.jpg');
+    possiblePaths.unshift('./chromecast_stream/CCA_5344-HDR.jpg');
+  }
   
   console.log('🖼️  Attempting to load background image from multiple paths:', possiblePaths);
   console.log('📍 Current page URL:', window.location.href);
@@ -339,7 +350,7 @@ async function initializeSlideshow() {
     } else {
       console.log('No images found in GitHub repository');
       // Fallback to default images if needed
-      availableImages = slideshowImgUrls;
+      availableImages = getFallbackImages();
       if (availableImages.length > 0) {
         currentIdx = 0;
         showImage(currentIdx);
@@ -349,7 +360,7 @@ async function initializeSlideshow() {
   } catch (error) {
     console.error('Error initializing slideshow:', error);
     // Fallback to default images
-    availableImages = slideshowImgUrls;
+    availableImages = getFallbackImages();
     if (availableImages.length > 0) {
       currentIdx = 0;
       showImage(currentIdx);
@@ -358,6 +369,14 @@ async function initializeSlideshow() {
 }
 
 setInterval(nextImage, 10000); // 10 seconds
+
+// Function to get fallback images with correct paths for current environment
+function getFallbackImages() {
+  return [
+    getImagePath('imam_schedule.jpg'),
+    getImagePath('sundayschool.jpg'),
+  ];
+}
 
 // === Rotating Ayat/Hadith Logic ===
 const annList = document.getElementById('announcements-list');

@@ -12,6 +12,19 @@ export const slideshowImgUrls = [
   'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=Prayer+Times'
 ];
 
+// Function to get GitHub Pages compatible image paths
+export function getImagePath(imageName) {
+  const isGitHubPages = typeof window !== 'undefined' && (
+    window.location.hostname === 'itsecretary-map.github.io' || 
+    window.location.pathname.includes('/chromecast_stream/')
+  );
+  
+  if (isGitHubPages) {
+    return `/chromecast_stream/images/slideshow/${imageName}`;
+  }
+  return `./images/slideshow/${imageName}`;
+}
+
 // Quranic Ayat/Hadith List (Arabic + Translation)
 export const ayatHadithList = [
   { ar: 'إِنَّ الصَّلَاةَ تَنْهَىٰ عَنِ الْفَحْشَاءِ وَالْمُنكَرِ', en: 'Indeed, prayer prohibits immorality and wrongdoing. (Quran 29:45)' },
