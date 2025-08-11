@@ -11,74 +11,71 @@ import {
 
 // === BACKGROUND IMAGE LOADING ===
 function loadBackgroundImage() {
-  const backgroundImageUrl = './CCA_5344-HDR.jpg';
-  console.log('🖼️  Loading background image:', backgroundImageUrl);
+  // Try multiple possible paths for the background image
+  const possiblePaths = [
+    './CCA_5344-HDR.jpg',
+    'CCA_5344-HDR.jpg',
+    '/CCA_5344-HDR.jpg',
+    '../CCA_5344-HDR.jpg'
+  ];
+  
+  console.log('🖼️  Attempting to load background image from multiple paths:', possiblePaths);
   console.log('📍 Current page URL:', window.location.href);
   console.log('📁 Current page pathname:', window.location.pathname);
+  
+  let currentPathIndex = 0;
   
   // Create a temporary image to test loading
   const testImg = new Image();
   
   testImg.onload = () => {
-    console.log('✅ Background image loaded successfully:', backgroundImageUrl);
-    console.log('📏 Image dimensions:', testImg.width, 'x', testImg.height);
+    console.log('✅ Background image loaded successfully:', testImg.src);
+    console.log('📏 Image dimensions:', testImg.naturalWidth, 'x', testImg.naturalHeight);
     console.log('💾 Image size:', (testImg.naturalWidth * testImg.naturalHeight * 4 / 1024 / 1024).toFixed(2), 'MB (estimated)');
     
-    // Apply background image to body
-    document.body.style.backgroundImage = `url('${backgroundImageUrl}')`;
-    document.body.style.backgroundSize = 'cover';
-    document.body.style.backgroundPosition = 'center center';
-    document.body.style.backgroundAttachment = 'fixed';
+    // Apply background image to body with !important to override any CSS
+    document.body.style.setProperty('background-image', `url('${testImg.src}')`, 'important');
+    document.body.style.setProperty('background-size', 'cover', 'important');
+    document.body.style.setProperty('background-position', 'center center', 'important');
+    document.body.style.setProperty('background-attachment', 'fixed', 'important');
+    document.body.style.setProperty('background-repeat', 'no-repeat', 'important');
     
-    console.log('🎨 Background image applied to body element');
+    console.log('🎨 Background image applied to body element with !important');
   };
   
   testImg.onerror = () => {
-    console.error('❌ Failed to load background image:', backgroundImageUrl);
-    console.error('🔍 Check if the file exists at:', backgroundImageUrl);
+    console.error(`❌ Failed to load background image from path ${currentPathIndex + 1}/${possiblePaths.length}:`, possiblePaths[currentPathIndex]);
     
-    // Try alternative paths
-    const alternativePaths = [
-      'CCA_5344-HDR.jpg',
-      '/CCA_5344-HDR.jpg',
-      '../CCA_5344-HDR.jpg'
-    ];
+    // Try next path in the array
+    currentPathIndex++;
     
-    console.log('🔄 Trying alternative paths:', alternativePaths);
-    
-    // Try alternative paths one by one
-    let pathIndex = 0;
-    const tryNextPath = () => {
-      if (pathIndex < alternativePaths.length) {
-        const altPath = alternativePaths[pathIndex];
-        console.log(`🔄 Attempting alternative path ${pathIndex + 1}/${alternativePaths.length}:`, altPath);
-        pathIndex++;
-        testImg.src = altPath;
-      } else {
-        console.error('❌ All alternative paths failed. Background image could not be loaded.');
-        // Set a fallback background color
-        document.body.style.backgroundColor = '#2c3e50';
-        document.body.style.backgroundImage = 'none';
-        console.log('🎨 Applied fallback background color');
-      }
-    };
-    
-    testImg.onerror = tryNextPath;
-    testImg.onload = () => {
-      console.log('✅ Background image loaded with alternative path:', testImg.src);
-      document.body.style.backgroundImage = `url('${testImg.src}')`;
-      document.body.style.backgroundSize = 'cover';
-      document.body.style.backgroundPosition = 'center center';
-      document.body.style.backgroundAttachment = 'fixed';
-      console.log('🎨 Background image applied to body element');
-    };
-    
-    // Start with first alternative path
-    tryNextPath();
+    if (currentPathIndex < possiblePaths.length) {
+      const nextPath = possiblePaths[currentPathIndex];
+      console.log(`🔄 Trying next path (${currentPathIndex + 1}/${possiblePaths.length}):`, nextPath);
+      testImg.src = nextPath;
+    } else {
+      console.error('❌ All paths failed. Background image could not be loaded.');
+      console.log('🎨 Keeping CSS gradient background as fallback');
+      // Don't override the CSS background - let it show the nice gradient
+    }
   };
   
-  // Start loading the image
-  testImg.src = backgroundImageUrl;
+  // Start with first path
+  console.log(`🚀 Starting with path: ${possiblePaths[0]}`);
+  testImg.src = possiblePaths[0];
+  
+  // Also test if we can fetch the image directly
+  fetch(possiblePaths[0])
+    .then(response => {
+      if (response.ok) {
+        console.log('✅ Fetch API confirms image is accessible:', possiblePaths[0]);
+      } else {
+        console.error('❌ Fetch API failed:', response.status, response.statusText);
+      }
+    })
+    .catch(error => {
+      console.error('❌ Fetch API error:', error);
+    });
 }
 
 // === IMAGE MANAGEMENT ===
@@ -366,7 +363,7 @@ function showAyat(idx) {
   // Remove trailing period from Arabic and English if present
   const ar = ayatHadithList[idx].ar.replace(/[.\u06D4]+$/, '');
   const en = ayatHadithList[idx].en.replace(/[.]+(?=\s*\()/, '');
-  wrapper.innerHTML = `<div style="font-size:1.5rem;font-weight:bold;direction:rtl;text-align:center;">${ar}</div><div style="margin-top:6px;font-size:1.1rem;text-align:center;">${en}</div>`;
+  wrapper.innerHTML = `<div style="font-size:1.5rem;font-weight:bold;direction:rtl;text-align:center;color:white;">${ar}</div><div style="margin-top:6px;font-size:1.1rem;text-align:center;color:white;">${en}</div>`;
   annList.appendChild(wrapper);
 }
 showAyat(ayatIdx);
@@ -473,7 +470,18 @@ if (qrList && qrImageUrls && typeof qrImageUrls === 'object') {
 
 // Initialize everything when the page loads
 console.log('🚀 Initializing Chromecast Receiver Demo...');
-loadBackgroundImage();
+
+// Ensure DOM is fully loaded before setting background
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('📄 DOM fully loaded, setting background image...');
+    loadBackgroundImage();
+  });
+} else {
+  console.log('📄 DOM already loaded, setting background image...');
+  loadBackgroundImage();
+}
+
 initializeSlideshow();
 
 // Detect if running as Chromecast receiver and optimize layout
