@@ -1,0 +1,334 @@
+/* style.css - Chromecast Receiver Demo */
+/* === CHROMECAST RECEIVER OPTIMIZATION === */
+/* These styles optimize the layout for TV displays when casting */
+
+/* Base styles */
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* Background will be set by JavaScript */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Nice gradient fallback */
+  min-height: 100vh;
+  color: #333;
+}
+
+/* Main layout - Three rows */
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Row 1: Welcome Message */
+.header {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid black;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+}
+
+/* Row 2: Three Columns */
+.content-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 20px;
+  align-items: stretch;
+  min-height: 60vh;
+}
+
+/* Prayer Times Column */
+.prayer-times {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid black;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.prayer-times h2 {
+  margin: 0 0 20px 0;
+  color: #fff;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.prayer-times ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+}
+
+.prayer-times ul li {
+  background: rgba(255, 255, 255, 0.1);
+  margin-bottom: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  border-left: 4px solid #4CAF50;
+  color: #fff;
+}
+
+.prayer-times ul li:last-child {
+  margin-bottom: 0;
+}
+
+/* Slideshow Column */
+.slideshow {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid black;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slideshow img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+/* QR Codes Column */
+.qr-codes {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid black;
+  text-align: center;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.qr-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.qr-list div {
+  text-align: center;
+}
+
+.qr-list div div:first-child {
+  color: #fff;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.qr-img {
+  width: 130px;
+  height: 130px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Row 3: Ayat */
+.announcements {
+  padding: 20px;
+  border-radius: 12px;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.announcements ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.announcements ul li {
+  background: rgba(255, 255, 255, 0.1);
+  margin-bottom: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  border-left: 4px solid #9C27B0;
+  color: #fff;
+}
+
+.announcements ul li:last-child {
+  margin-bottom: 0;
+}
+
+/* Chromecast Controls */
+.chromecast-controls {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 12px;
+  padding: 16px;
+  border: 2px solid #4CAF50;
+}
+
+.cast-button {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.cast-button:hover {
+  background: #45a049;
+}
+
+.cast-status {
+  margin-top: 12px;
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+}
+
+.connected { color: #4CAF50; }
+.connecting { color: #ff9800; }
+.disconnected { color: #f44336; }
+
+/* Media Queries for different screen sizes */
+
+/* 1080p and above */
+@media (min-width: 1920px) and (min-height: 1080px) {
+  body {
+    font-size: 24px;
+    padding: 40px;
+  }
+  
+  .main-layout {
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 30px;
+  }
+  
+  .content-row {
+    display: grid !important;
+    grid-template-columns: 1fr 2fr 1fr !important;
+    gap: 40px !important;
+    align-items: stretch !important;
+    min-height: 70vh !important;
+  }
+  
+  .header {
+    font-size: 3rem;
+    padding: 30px;
+  }
+  
+  .prayer-times h2,
+  .announcements h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .prayer-times ul li,
+  .announcements ul li {
+    font-size: 2rem;
+    margin-bottom: 16px;
+    padding: 16px;
+  }
+  
+  .qr-img {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+/* Ultra-wide TV support (4K and above) */
+@media (min-width: 3840px) {
+  body {
+    font-size: 32px;
+    padding: 60px;
+  }
+  
+  .header {
+    font-size: 4rem;
+    padding: 40px;
+  }
+  
+  .content-row {
+    gap: 60px;
+    min-height: 80vh;
+  }
+  
+  .qr-img {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+/* Large screens (1200px and above) */
+@media (min-width: 1200px) {
+  .main-layout {
+    max-width: 1200px;
+  }
+  
+  .content-row {
+    gap: 30px;
+    min-height: 65vh;
+  }
+}
+
+/* Medium screens */
+@media (max-width: 1199px) and (min-width: 768px) {
+  .content-row {
+    grid-template-columns: 1fr 1.5fr 1fr;
+    gap: 15px;
+  }
+  
+  .header {
+    font-size: 1.8rem;
+  }
+}
+
+/* Mobile devices */
+@media (max-width: 767px) {
+  .main-layout {
+    gap: 15px;
+  }
+  
+  .content-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .header {
+    font-size: 1.5rem;
+    padding: 15px;
+  }
+  
+  .prayer-times,
+  .slideshow,
+  .qr-codes {
+    padding: 15px;
+  }
+  
+  .slideshow img {
+    max-height: 50vh;
+  }
+  
+  .qr-img {
+    width: 100px;
+    height: 100px;
+  }
+}

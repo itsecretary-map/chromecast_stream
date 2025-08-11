@@ -6,6 +6,7 @@
   <meta http-equiv="Cache-Control" content="public, max-age=86400" />
   <meta http-equiv="Expires" content="86400" />
   <title>Chromecast Slideshow Receiver</title>
+  <link rel="stylesheet" href="./src/style.css" />
   <style>
     /* Chromecast sender controls - for when this page is used as a sender */
     .chromecast-controls {
@@ -46,8 +47,7 @@
     .connecting { color: #ff9800; }
     .disconnected { color: #f44336; }
   </style>
-  <script type="module" crossorigin src="/chromecast_stream/assets/index-tzi1ws0R.js"></script>
-  <link rel="stylesheet" crossorigin href="/chromecast_stream/assets/index-DIx5GAQl.css">
+
 </head>
 <body>
   <!-- Chromecast Controls - Only visible when used as sender -->
@@ -93,6 +93,7 @@
 
   <!-- Chromecast API -->
   <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+  <script type="module" src="./src/main.js"></script>
   <script>
     // Chromecast functionality
     let castSender;
