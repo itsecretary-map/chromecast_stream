@@ -4,7 +4,12 @@
 
 // Fallback image URLs (used if GitHub API fails)
 export const slideshowImgUrls = [
-  // These will only be used if GitHub integration fails
+  // Fallback images - these will be used if GitHub integration fails
+  './CCA_5344-HDR.jpg', // Background image as fallback
+  'https://via.placeholder.com/800x600/4CAF50/FFFFFF?text=MAP+Community',
+  'https://via.placeholder.com/800x600/2196F3/FFFFFF?text=Welcome+to+MAP',
+  'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=Prayer+Times',
+  'https://via.placeholder.com/800x600/9C27B0/FFFFFF?text=Community+Events'
 ];
 
 // Quranic Ayat/Hadith List (Arabic + Translation)
@@ -37,6 +42,6 @@ export const qrImageLabels = {
 export const githubConfig = {
   owner: 'itsecretary-map', // Repository owner
   repo: 'chromecast_stream',
-  folder: 'images/slideshow', // Full path to slideshow folder
+  folder: '', // Root folder since images are in root
   enabled: true
 };

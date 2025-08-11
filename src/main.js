@@ -142,6 +142,11 @@ async function fetchGitHubImages() {
     
     const response = await fetch(apiUrl);
     if (!response.ok) {
+      if (response.status === 404) {
+        console.warn('⚠️ GitHub folder not found:', apiUrl);
+        console.log('This is expected if the folder is empty or doesn\'t exist');
+        return [];
+      }
       throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
     }
     
@@ -168,6 +173,7 @@ async function fetchGitHubImages() {
     
   } catch (error) {
     console.error('Error fetching GitHub images:', error);
+    console.log('Falling back to default slideshow images');
     return [];
   }
 }
