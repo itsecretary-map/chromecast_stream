@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="public, max-age=86400" />
+  <meta http-equiv="Expires" content="86400" />
+  <title>Chromecast Slideshow Receiver</title>
+  <link rel="stylesheet" href="./src/style.css" />
+  <style>
+    /* Chromecast sender controls - for when this page is used as a sender */
+    .chromecast-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 12px;
+      padding: 16px;
+      border: 2px solid #4CAF50;
+    }
+    
+    .cast-button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    
+    .cast-button:hover {
+      background: #45a049;
+    }
+    
+    .cast-status {
+      margin-top: 12px;
+      color: #fff;
+      font-size: 14px;
+      text-align: center;
+    }
+    
+    .connected { color: #4CAF50; }
+    .connecting { color: #ff9800; }
+    .disconnected { color: #f44336; }
+  </style>
+</head>
+<body>
+  <!-- Chromecast Controls - Only visible when used as sender -->
+  <div class="chromecast-controls">
+    <button id="castButton" class="cast-button" onclick="initializeCast()">
+      📺 Cast to Chromecast
+    </button>
+    <button id="debugButton" class="cast-button" onclick="debugCastStatus()" style="background: #2196F3; margin-top: 8px;">
+      🔍 Debug Cast Status
+    </button>
+    <div id="castStatus" class="cast-status disconnected">
+      Ready to cast
+    </div>
+  </div>
+
+  <div class="main-layout">
+    <!-- Row 1: Welcome Message -->
+    <div class="header">Welcome to Muslim Association of Greater Pittsburgh (MAP)</div>
+    
+    <!-- Row 2: Three Columns -->
+    <div class="content-row">
+      <div class="prayer-times">
+        <h2>Prayer Times</h2>
+        <ul id="prayer-times-list">
+          <!-- Populated by JS -->
+        </ul>
+      </div>
+      
+      <div class="slideshow">
+        <img id="slideshow-img" src="" alt="Slideshow" />
+      </div>
+      
+      <div class="qr-codes">
+        <div class="qr-list"></div>
+      </div>
+    </div>
+    
+    <!-- Row 3: Ayat -->
+    <div class="announcements">
+      <ul id="announcements-list"></ul>
+    </div>
+  </div>
+
+  <!-- Chromecast API -->
+  <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+  <script type="module" src="./src/main.js"></script>
+  <script>
+    // Chromecast functionality
+    let castSender;
+    
+    function initializeCast() {
+      console.log('🎬 Initializing Chromecast...');
+      if (!castSender) {
+        castSender = new ChromecastSender();
+      }
+      castSender.searchForDevices();
+    }
+    
+    // Debug function to check Chromecast status
+    function debugCastStatus() {
+      console.log('🔍 Chromecast Debug Info:');
+      console.log('  - Cast API available:', typeof cast !== 'undefined');
+      console.log('  - Cast framework available:', typeof cast?.framework !== 'undefined');
+      console.log('  - Current session:', castSender?.session);
+      console.log('  - App ID:', castSender?.applicationID);
+      
+      if (typeof cast !== 'undefined') {
+        const context = cast.framework.CastContext.getInstance();
+        console.log('  - Cast context state:', context.getSessionState());
+        console.log('  - Available receivers:', context.getAvailableReceivers());
+      }
+    }
+    
+    class ChromecastSender {
+      constructor() {
+        this.applicationID = '57E55C54';
+        this.session = null;
+        this.initializeCastApi();
+      }
+      
+      initializeCastApi() {
+        console.log('🔧 Initializing Cast API...');
+        
+        if (typeof cast === 'undefined') {
+          console.error('❌ Chromecast API not available');
+          this.updateStatus('Chromecast API not available', 'disconnected');
+          return;
+        }
+        
+        if (typeof cast.framework === 'undefined') {
+          console.error('❌ Cast framework not available');
+          this.updateStatus('Cast framework not available', 'disconnected');
+          return;
+        }
+        
+        try {
+          const context = cast.framework.CastContext.getInstance();
+          console.log('✅ Cast context obtained');
+          
+          context.setOptions({
+            receiverApplicationId: this.applicationID,
+            autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
+          });
+          
+          console.log('✅ Cast options set with App ID:', this.applicationID);
+          this.setupEventListeners();
+          
+        } catch (error) {
+          console.error('❌ Error initializing Cast API:', error);
+          this.updateStatus('Cast API error: ' + error.message, 'disconnected');
+        }
+      }
+      
+      setupEventListeners() {
+        const context = cast.framework.CastContext.getInstance();
+        
+        context.addEventListener(
+          cast.framework.CastContextEventType.SESSION_STATE_CHANGED,
+          (event) => {
+            this.onSessionStateChanged(event);
+          }
+        );
+      }
+      
+      onSessionStateChanged(event) {
+        const sessionState = event.sessionState;
+        
+        switch (sessionState) {
+          case cast.framework.SessionState.CONNECTED:
+            this.onSessionConnected(event.session);
+            break;
+          case cast.framework.SessionState.DISCONNECTED:
+            this.onSessionDisconnected();
+            break;
+          case cast.framework.SessionState.CONNECTING:
+            this.updateStatus('Connecting...', 'connecting');
+            break;
+        }
+      }
+      
+      onSessionConnected(session) {
+        this.session = session;
+        this.updateStatus('Connected!', 'connected');
+        this.loadSlideshow();
+      }
+      
+      onSessionDisconnected() {
+        this.session = null;
+        this.updateStatus('Ready to cast', 'disconnected');
+      }
+      
+      async loadSlideshow() {
+        if (!this.session) return;
+        
+        try {
+          const mediaInfo = new chrome.cast.media.MediaInfo(
+            window.location.href,
+            'text/html'
+          );
+          
+          const request = new chrome.cast.media.LoadRequest(mediaInfo);
+          await this.session.loadMedia(request);
+          
+        } catch (error) {
+          console.error('Failed to load slideshow:', error);
+        }
+      }
+      
+      searchForDevices() {
+        console.log('🔍 Searching for Chromecast devices...');
+        try {
+          const context = cast.framework.CastContext.getInstance();
+          console.log('✅ Requesting Cast session...');
+          context.requestSession();
+        } catch (error) {
+          console.error('❌ Error searching for devices:', error);
+          this.updateStatus('Search error: ' + error.message, 'disconnected');
+        }
+      }
+      
+      updateStatus(message, className) {
+        const statusElement = document.getElementById('castStatus');
+        if (statusElement) {
+          statusElement.textContent = message;
+          statusElement.className = `cast-status ${className}`;
+        }
+      }
+    }
+  </script>
+</body>
+</html>
