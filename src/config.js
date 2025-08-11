@@ -40,15 +40,14 @@ export const ayatHadithList = [
 ];
 
 // QR Code Images and Labels
+// Using local images for better reliability - only two QR codes to reduce row height
 export const qrImageUrls = {
-  mapWebsite: 'https://lh3.googleusercontent.com/pw/AP1GczMiSbMYQ1chhnVDpXwImM1H0Rp17RSa8uuGaPLCb0WPxRT8YNa2yA3Jce_Id76WDTb2gVxzjJ0iKmY6hDm8HDT6XApjx3cDdDzVXpRC89cODpoberK3bLCmqasSUTIX3bXt4VzBFvnhZmo-ukukJhYz=w450-h450-s-no-gm?authuser=0',
-  mohidDonation: 'https://lh3.googleusercontent.com/pw/AP1GczME-q_Z1uZsf6O03ycHY5UCOXZx45f4XblJAuy9qt1m2f4xdQKFBzJKZKycsEIrpyO-jXhC8WAh1iR-QPLmYjcbBLxL4hxHlRoPWxpHE6ZLH3Y708qJ6yXcY_WiBHmkBJsmL7WkOEhI-nHqAL5R7VWQ=w450-h450-s-no-gm?authuser=0',
-  communityWhatsApp: 'https://lh3.googleusercontent.com/pw/AP1GczNzysZmpkevxf8TpH2-afM-4ph5OVNunXyKdf5lXyingNMnYGhQpBulHtUE20dq5xvONx0SOibIpvxVQ4LQcZcYc403qfqTpRx-mJSKShaFvJgJTONUrJF3p9dlNpzIjR4DX2moKvPOreG8pg6iy613=w450-h450-s-no-gm?authuser=0',
+  mapWebsite: './images/qr-codes/mapitt.png',
+  communityWhatsApp: './images/qr-codes/whatsapp_group.png',
 };
 
 export const qrImageLabels = {
   mapWebsite: 'MAP Website',
-  mohidDonation: 'Mohid Donation',
   communityWhatsApp: 'Community WhatsApp',
 };
 
