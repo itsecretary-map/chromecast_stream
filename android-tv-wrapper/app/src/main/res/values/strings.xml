@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MAP Chromecast Stream</string>
+    <string name="app_description">Muslim Association of Pittsburgh Community Stream</string>
+    <string name="loading_message">Loading MAP Stream...</string>
+    <string name="error_message">Failed to load content</string>
+    <string name="retry_button">Retry</string>
+</resources>
