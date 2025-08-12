@@ -10,7 +10,9 @@
   --row-gap: clamp(15px, 2vw, 30px);
   --padding: clamp(15px, 2vw, 30px);
   --border-radius: clamp(8px, 1vw, 12px);
-  --min-height: clamp(50vh, 60vh, 80vh);
+  --min-height: clamp(30vh, 40vh, 50vh); /* Reduced from 50vh-80vh to 30vh-50vh */
+  --header-height: clamp(15vh, 20vh, 25vh); /* New: Header height */
+  --announcements-height: clamp(15vh, 20vh, 25vh); /* New: Announcements height */
 }
 
 /* Base styles with viewport-based units */
@@ -51,6 +53,11 @@ body {
   font-weight: bold;
   color: white;
   line-height: 1.2;
+  min-height: var(--header-height);
+  max-height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Row 2: Three Columns - Responsive Grid */
@@ -60,8 +67,11 @@ body {
   gap: var(--column-gap);
   align-items: stretch;
   min-height: var(--min-height);
+  max-height: var(--min-height);
   /* Ensure columns maintain aspect ratio on ultra-wide screens */
   grid-auto-rows: 1fr;
+  /* TV-specific: Ensure content fits properly */
+  overflow: hidden;
 }
 
 /* Prayer Times Column */
@@ -180,7 +190,12 @@ body {
   padding: var(--padding);
   border-radius: var(--border-radius);
   border: 2px solid black;
-  min-height: 0; /* Allow flex shrinking */
+  min-height: var(--announcements-height);
+  max-height: var(--announcements-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .announcements ul {
@@ -481,5 +496,43 @@ body {
   
   .main-layout {
     max-width: none;
+  }
+}
+
+/* === TV-SPECIFIC OPTIMIZATIONS === */
+/* Optimize for TV displays and ultra-wide screens */
+
+@media (min-width: 1920px) {
+  /* 4K and ultra-wide TV optimization */
+  :root {
+    --min-height: clamp(25vh, 35vh, 45vh);
+    --header-height: clamp(12vh, 18vh, 22vh);
+    --announcements-height: clamp(12vh, 18vh, 22vh);
+  }
+  
+  .content-row {
+    gap: clamp(20px, 3vw, 50px);
+  }
+  
+  .prayer-times ul li,
+  .announcements ul li {
+    padding: clamp(15px, 2.5vw, 25px);
+    font-size: clamp(1rem, 2vw, 1.5rem);
+  }
+}
+
+@media (min-width: 3840px) {
+  /* 8K TV optimization */
+  :root {
+    --min-height: clamp(20vh, 30vh, 40vh);
+    --header-height: clamp(10vh, 15vh, 20vh);
+    --announcements-height: clamp(10vh, 15vh, 20vh);
+  }
+}
+
+@media (min-aspect-ratio: 21/9) {
+  /* Ultra-wide aspect ratio optimization */
+  .content-row {
+    grid-template-columns: minmax(250px, 1fr) minmax(400px, 2.5fr) minmax(250px, 1fr);
   }
 }
