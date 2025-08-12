@@ -285,6 +285,38 @@ function optimizeForTVDisplay() {
   console.log('🎨 TV display optimizations applied');
 }
 
+// TV aspect ratio detection and optimization
+function optimizeForTV() {
+  const aspectRatio = window.innerWidth / window.innerHeight;
+  const isTV = window.innerWidth >= 1920;
+  
+  if (isTV) {
+    console.log(`TV detected: ${window.innerWidth}x${window.innerHeight}, aspect ratio: ${aspectRatio.toFixed(2)}`);
+    
+    if (aspectRatio <= 16/9) {
+      // 16:9 or narrower - optimize for standard TV
+      document.documentElement.style.setProperty('--min-height', 'clamp(25vh, 35vh, 40vh)');
+      document.documentElement.style.setProperty('--header-height', 'clamp(8vh, 12vh, 15vh)');
+      document.documentElement.style.setProperty('--announcements-height', 'clamp(8vh, 12vh, 15vh)');
+      document.documentElement.style.setProperty('--column-gap', 'clamp(20px, 2.5vw, 35px)');
+      document.documentElement.style.setProperty('--row-gap', 'clamp(8px, 1vw, 15px)');
+      console.log('Applied 16:9 TV optimization');
+    } else {
+      // Ultra-wide - optimize for wide displays
+      document.documentElement.style.setProperty('--min-height', 'clamp(20vh, 30vh, 35vh)');
+      document.documentElement.style.setProperty('--header-height', 'clamp(6vh, 10vh, 12vh)');
+      document.documentElement.style.setProperty('--announcements-height', 'clamp(6vh, 10vh, 12vh)');
+      document.documentElement.style.setProperty('--column-gap', 'clamp(25px, 3vw, 45px)');
+      document.documentElement.style.setProperty('--row-gap', 'clamp(6px, 0.8vw, 12px)');
+      console.log('Applied ultra-wide TV optimization');
+    }
+  }
+}
+
+// Call TV optimization on load and resize
+window.addEventListener('load', optimizeForTV);
+window.addEventListener('resize', optimizeForTV);
+
 // === Slideshow Logic ===
 let currentIdx = 0;
 const imgEl = document.getElementById('slideshow-img');
