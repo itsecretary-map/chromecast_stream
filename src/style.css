@@ -42,22 +42,28 @@ body {
   min-height: 100vh;
 }
 
-/* Row 1: Welcome Message */
+/* Header/Row 1 */
 .header {
   background: rgba(0, 0, 0, 0.7);
   padding: var(--padding);
   border-radius: var(--border-radius);
   border: 2px solid black;
-  text-align: center;
-  font-size: var(--header-font-size);
-  font-weight: bold;
-  color: white;
-  line-height: 1.2;
   min-height: var(--header-height);
   max-height: var(--header-height);
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  /* Reduce margins to bring background closer to boundary */
+  margin: clamp(2px, 0.3vw, 6px) clamp(2px, 0.3vw, 6px) 0 clamp(2px, 0.3vw, 6px);
+}
+
+.header h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(1rem, 2.5vw, 1.8rem); /* Reduced from 1.2rem-2.2rem to 1rem-1.8rem */
+  line-height: 1.2;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 /* Row 2: Three Columns - Responsive Grid */
@@ -88,11 +94,11 @@ body {
 }
 
 .prayer-times h2 {
-  margin: 0 0 15px 0; /* Reduced from 20px to 15px */
+  margin: 0 0 10px 0; /* Reduced from 15px to 10px */
   color: #fff;
-  font-size: clamp(1.1rem, 2.2vw, 1.8rem); /* Reduced font size */
+  font-size: clamp(0.9rem, 2vw, 1.5rem); /* Reduced font size further */
   text-align: center;
-  line-height: 1.2;
+  line-height: 1.1;
 }
 
 .prayer-times ul {
@@ -102,19 +108,19 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: clamp(6px, 1vw, 12px); /* Reduced gap */
+  gap: clamp(4px, 0.8vw, 8px); /* Reduced gap further */
   overflow: hidden; /* Prevent overflow */
 }
 
 .prayer-times ul li {
   background: rgba(255, 255, 255, 0.1);
   margin-bottom: 0;
-  padding: clamp(8px, 1.2vw, 14px); /* Reduced padding */
+  padding: clamp(6px, 1vw, 10px); /* Reduced padding further */
   border-radius: calc(var(--border-radius) - 4px);
-  border-left: 4px solid #4CAF50;
+  border-left: 3px solid #4CAF50; /* Reduced border width */
   color: #fff;
-  font-size: clamp(0.8rem, 1.3vw, 1.1rem); /* Reduced font size */
-  line-height: 1.2; /* Reduced line height */
+  font-size: clamp(0.7rem, 1.1vw, 0.9rem); /* Reduced font size further */
+  line-height: 1.1; /* Reduced line height */
   flex-shrink: 0;
 }
 
@@ -569,14 +575,23 @@ body {
   
   /* Better prayer times layout for TV */
   .prayer-times h2 {
-    font-size: clamp(1.3rem, 2.8vw, 2rem);
-    margin-bottom: 12px;
+    font-size: clamp(1.1rem, 2.5vw, 1.7rem);
+    margin-bottom: 8px;
   }
   
   .prayer-times ul li {
-    font-size: clamp(1rem, 1.8vw, 1.3rem);
-    padding: clamp(10px, 1.5vw, 16px);
-    line-height: 1.3;
+    font-size: clamp(0.9rem, 1.6vw, 1.1rem);
+    padding: clamp(8px, 1.2vw, 12px);
+    line-height: 1.2;
+  }
+  
+  /* Header optimization for TV */
+  .header {
+    margin: clamp(1px, 0.2vw, 4px) clamp(1px, 0.2vw, 4px) 0 clamp(1px, 0.2vw, 4px);
+  }
+  
+  .header h1 {
+    font-size: clamp(0.9rem, 2.2vw, 1.6rem);
   }
   
   /* Optimize slideshow for TV */
