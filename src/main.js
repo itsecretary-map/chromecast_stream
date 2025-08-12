@@ -392,9 +392,9 @@ function showAyat(idx) {
   annList.innerHTML = '';
   // Use a div instead of <li> to avoid bullet
   const wrapper = document.createElement('div');
-  // Only show English version with smaller font
+  // Only show English version with smaller font and proper positioning
   const en = ayatHadithList[idx].en.replace(/[.]+(?=\s*\()/, '');
-  wrapper.innerHTML = `<div style="font-size:1.1rem;text-align:center;color:white;line-height:1.4;">${en}</div>`;
+  wrapper.innerHTML = `<div style="font-size:1rem;text-align:center;color:white;line-height:1.4;padding:15px;background:rgba(255,255,255,0.1);border-radius:8px;border-left:4px solid #2196F3;">${en}</div>`;
   annList.appendChild(wrapper);
 }
 showAyat(ayatIdx);

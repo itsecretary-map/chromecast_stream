@@ -84,12 +84,13 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 0; /* Allow flex shrinking */
+  overflow: hidden; /* Prevent content overflow */
 }
 
 .prayer-times h2 {
-  margin: 0 0 20px 0;
+  margin: 0 0 15px 0; /* Reduced from 20px to 15px */
   color: #fff;
-  font-size: clamp(1.2rem, 2.5vw, 2rem);
+  font-size: clamp(1.1rem, 2.2vw, 1.8rem); /* Reduced font size */
   text-align: center;
   line-height: 1.2;
 }
@@ -101,18 +102,19 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: clamp(8px, 1vw, 16px);
+  gap: clamp(6px, 1vw, 12px); /* Reduced gap */
+  overflow: hidden; /* Prevent overflow */
 }
 
 .prayer-times ul li {
   background: rgba(255, 255, 255, 0.1);
   margin-bottom: 0;
-  padding: clamp(10px, 1.5vw, 16px);
+  padding: clamp(8px, 1.2vw, 14px); /* Reduced padding */
   border-radius: calc(var(--border-radius) - 4px);
   border-left: 4px solid #4CAF50;
   color: #fff;
-  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
-  line-height: 1.3;
+  font-size: clamp(0.8rem, 1.3vw, 1.1rem); /* Reduced font size */
+  line-height: 1.2; /* Reduced line height */
   flex-shrink: 0;
 }
 
@@ -142,6 +144,8 @@ body {
   object-fit: contain;
   width: auto;
   height: auto;
+  /* Ensure image fits within container */
+  max-height: calc(100% - 2 * var(--padding));
 }
 
 /* QR Codes Column */
@@ -156,46 +160,51 @@ body {
   flex-direction: column;
   justify-content: center;
   min-height: 0; /* Allow flex shrinking */
+  overflow: hidden; /* Prevent overflow */
 }
 
 .qr-list {
   display: flex;
   flex-direction: column;
-  gap: clamp(15px, 2vw, 25px);
+  gap: clamp(12px, 1.5vw, 20px); /* Reduced gap */
   align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .qr-list div {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(8px, 1vw, 12px);
+  gap: clamp(6px, 0.8vw, 10px); /* Reduced gap */
 }
 
 .qr-list div div:first-child {
   font-weight: bold;
   color: #fff;
-  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+  font-size: clamp(0.8rem, 1.2vw, 1rem); /* Reduced font size */
+  margin-bottom: 5px; /* Reduced margin */
 }
 
 .qr-img {
-  width: clamp(80px, 15vw, 150px);
-  height: clamp(80px, 15vw, 150px);
+  width: clamp(70px, 12vw, 120px); /* Reduced size */
+  height: clamp(70px, 12vw, 120px); /* Reduced size */
   border-radius: calc(var(--border-radius) - 4px);
 }
 
 /* Announcements/Row 3 */
 .announcements {
-  background: rgba(0, 0, 0, 0.7);
   padding: var(--padding);
   border-radius: var(--border-radius);
-  border: 2px solid black;
   min-height: var(--announcements-height);
   max-height: var(--announcements-height);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  /* Remove background for cleaner look */
+  background: transparent;
+  border: none;
 }
 
 .announcements ul {
@@ -204,17 +213,17 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: clamp(10px, 1.5vw, 20px);
+  gap: clamp(8px, 1.2vw, 15px); /* Reduced gap */
 }
 
 .announcements ul li {
   background: rgba(255, 255, 255, 0.1);
-  padding: clamp(12px, 2vw, 20px);
+  padding: clamp(10px, 1.5vw, 18px); /* Reduced padding */
   border-radius: calc(var(--border-radius) - 4px);
   border-left: 4px solid #2196F3;
   color: #fff;
-  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
-  line-height: 1.4;
+  font-size: clamp(0.9rem, 1.4vw, 1.2rem); /* Reduced font size */
+  line-height: 1.3;
 }
 
 .announcements ul li:last-child {
