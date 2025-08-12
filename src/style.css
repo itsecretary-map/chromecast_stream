@@ -5,14 +5,14 @@
 /* CSS Custom Properties for responsive design */
 :root {
   --base-font-size: clamp(14px, 2vw, 24px);
-  --header-font-size: clamp(1.5rem, 4vw, 3rem);
+  --header-font-size: clamp(1.2rem, 3vw, 2.2rem); /* Reduced from 1.5rem-3rem to 1.2rem-2.2rem */
   --column-gap: clamp(15px, 2vw, 40px);
-  --row-gap: clamp(15px, 2vw, 30px);
+  --row-gap: clamp(10px, 1.5vw, 20px); /* Reduced from 15px-30px to 10px-20px */
   --padding: clamp(15px, 2vw, 30px);
   --border-radius: clamp(8px, 1vw, 12px);
-  --min-height: clamp(30vh, 40vh, 50vh); /* Reduced from 50vh-80vh to 30vh-50vh */
-  --header-height: clamp(15vh, 20vh, 25vh); /* New: Header height */
-  --announcements-height: clamp(15vh, 20vh, 25vh); /* New: Announcements height */
+  --min-height: clamp(30vh, 40vh, 50vh);
+  --header-height: clamp(12vh, 15vh, 18vh); /* Reduced from 15vh-25vh to 12vh-18vh */
+  --announcements-height: clamp(12vh, 15vh, 18vh); /* Reduced from 15vh-25vh to 12vh-18vh */
 }
 
 /* Base styles with viewport-based units */
@@ -506,8 +506,8 @@ body {
   /* 4K and ultra-wide TV optimization */
   :root {
     --min-height: clamp(25vh, 35vh, 45vh);
-    --header-height: clamp(12vh, 18vh, 22vh);
-    --announcements-height: clamp(12vh, 18vh, 22vh);
+    --header-height: clamp(10vh, 12vh, 15vh); /* Reduced from 12vh-22vh to 10vh-15vh */
+    --announcements-height: clamp(10vh, 12vh, 15vh); /* Reduced from 12vh-22vh to 10vh-15vh */
   }
   
   .content-row {
@@ -525,8 +525,8 @@ body {
   /* 8K TV optimization */
   :root {
     --min-height: clamp(20vh, 30vh, 40vh);
-    --header-height: clamp(10vh, 15vh, 20vh);
-    --announcements-height: clamp(10vh, 15vh, 20vh);
+    --header-height: clamp(8vh, 10vh, 12vh); /* Reduced from 10vh-20vh to 8vh-12vh */
+    --announcements-height: clamp(8vh, 10vh, 12vh); /* Reduced from 10vh-20vh to 8vh-12vh */
   }
 }
 

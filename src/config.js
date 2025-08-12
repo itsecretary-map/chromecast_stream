@@ -74,7 +74,7 @@ export function getQrImageUrls() {
 
 export const qrImageLabels = {
   mapWebsite: 'MAP Website',
-  communityWhatsApp: 'Community WhatsApp',
+  communityWhatsApp: 'WhatsApp',
 };
 
 export const githubConfig = {
