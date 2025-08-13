@@ -18,7 +18,7 @@
 /* Base styles with viewport-based units */
 body {
   margin: 0;
-  padding: var(--padding);
+  padding: 0 var(--padding) var(--padding) var(--padding); /* Remove top padding */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   /* Background will be set by JavaScript */
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Nice gradient fallback */
@@ -40,6 +40,7 @@ body {
   max-width: min(1400px, 95vw);
   margin: 0 auto;
   min-height: 100vh;
+  justify-content: space-between; /* Ensure proper spacing */
 }
 
 /* Header/Row 1 */
@@ -54,14 +55,10 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  /* Reduce margins to bring background closer to boundary */
-  margin: clamp(2px, 0.3vw, 6px) clamp(2px, 0.3vw, 6px) 0 clamp(2px, 0.3vw, 6px);
-}
-
-.header h1 {
-  margin: 0;
-  color: #fff;
-  font-size: clamp(1rem, 2.5vw, 1.8rem); /* Reduced from 1.2rem-2.2rem to 1rem-1.8rem */
+  /* Start background box higher at the top - remove top margin */
+  margin: 0 clamp(2px, 0.3vw, 6px) 0 clamp(2px, 0.3vw, 6px);
+  color: #ffffff; /* Pure white color */
+  font-size: clamp(0.8rem, 2vw, 1.44rem); /* 20% smaller font size */
   line-height: 1.2;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
@@ -108,19 +105,19 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: clamp(4px, 0.8vw, 8px); /* Reduced gap further */
+  gap: clamp(2px, 0.5vw, 6px); /* Even more compact gap to fit all 6 prayers */
   overflow: hidden; /* Prevent overflow */
 }
 
 .prayer-times ul li {
   background: rgba(255, 255, 255, 0.1);
   margin-bottom: 0;
-  padding: clamp(6px, 1vw, 10px); /* Reduced padding further */
+  padding: clamp(4px, 0.8vw, 8px); /* More compact padding */
   border-radius: calc(var(--border-radius) - 4px);
   border-left: 3px solid #4CAF50; /* Reduced border width */
   color: #fff;
-  font-size: clamp(0.7rem, 1.1vw, 0.9rem); /* Reduced font size further */
-  line-height: 1.1; /* Reduced line height */
+  font-size: clamp(0.65rem, 1vw, 0.85rem); /* Smaller font for more compact layout */
+  line-height: 1.0; /* Tighter line height */
   flex-shrink: 0;
 }
 
@@ -193,8 +190,8 @@ body {
 }
 
 .qr-img {
-  width: clamp(70px, 12vw, 120px); /* Reduced size */
-  height: clamp(70px, 12vw, 120px); /* Reduced size */
+  width: clamp(50px, 8vw, 80px); /* Shrunk QR images by ~30% */
+  height: clamp(50px, 8vw, 80px); /* Shrunk QR images by ~30% */
   border-radius: calc(var(--border-radius) - 4px);
 }
 
@@ -208,9 +205,10 @@ body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  /* Remove background for cleaner look */
-  background: transparent;
-  border: none;
+  /* Add background and push to bottom */
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #2196F3;
+  margin-top: auto; /* Push to bottom */
 }
 
 .announcements ul {
@@ -294,8 +292,8 @@ body {
   }
   
   .qr-img {
-    width: 250px;
-    height: 250px;
+    width: 180px; /* Shrunk for ultra-wide displays */
+    height: 180px; /* Shrunk for ultra-wide displays */
   }
 }
 
@@ -316,8 +314,8 @@ body {
   }
   
   .qr-img {
-    width: 200px;
-    height: 200px;
+    width: 140px; /* Shrunk for 4K displays */
+    height: 140px; /* Shrunk for 4K displays */
   }
 }
 
@@ -338,8 +336,8 @@ body {
   }
   
   .qr-img {
-    width: 150px;
-    height: 150px;
+    width: 100px; /* Shrunk for 1080p displays */
+    height: 100px; /* Shrunk for 1080p displays */
   }
 }
 
@@ -418,8 +416,8 @@ body {
   }
   
   .qr-img {
-    width: 100px;
-    height: 100px;
+    width: 70px; /* Shrunk for mobile displays */
+    height: 70px; /* Shrunk for mobile displays */
   }
   
   body {
@@ -588,9 +586,7 @@ body {
   /* Header optimization for TV */
   .header {
     margin: clamp(1px, 0.2vw, 4px) clamp(1px, 0.2vw, 4px) 0 clamp(1px, 0.2vw, 4px);
-  }
-  
-  .header h1 {
+    color: #ffffff; /* Ensure white color on TV displays */
     font-size: clamp(0.9rem, 2.2vw, 1.6rem);
   }
   
@@ -602,8 +598,8 @@ body {
   
   /* Better QR code sizing for TV */
   .qr-img {
-    width: clamp(90px, 15vw, 140px);
-    height: clamp(90px, 15vw, 140px);
+    width: clamp(60px, 10vw, 100px); /* Shrunk for TV displays */
+    height: clamp(60px, 10vw, 100px); /* Shrunk for TV displays */
   }
   
   .qr-list div div:first-child {
