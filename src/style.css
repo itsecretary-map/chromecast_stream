@@ -40,7 +40,8 @@ body {
   max-width: min(1400px, 95vw);
   margin: 0 auto;
   min-height: 100vh;
-  justify-content: flex-start; /* Changed from space-between to reduce gaps on TV */
+  justify-content: center; /* Center the content vertically for uniform spacing */
+  padding: clamp(8px, 1vw, 15px) 0; /* Add margin boundaries for top/bottom rows */
 }
 
 /* Header/Row 1 */
@@ -105,7 +106,7 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: clamp(2px, 0.5vw, 6px); /* Even more compact gap to fit all 6 prayers */
+  gap: clamp(1px, 0.3vw, 4px); /* Even more compact gap to fit all 6 prayers */
   overflow: hidden; /* Prevent overflow */
 }
 
@@ -170,7 +171,7 @@ body {
 .qr-list {
   display: flex;
   flex-direction: column;
-  gap: clamp(12px, 1.5vw, 20px); /* Reduced gap */
+  gap: clamp(8px, 1vw, 15px); /* More compact gap */
   align-items: center;
   justify-content: center;
   height: 100%;
@@ -180,7 +181,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(6px, 0.8vw, 10px); /* Reduced gap */
+  gap: clamp(4px, 0.6vw, 8px); /* More compact gap */
 }
 
 .qr-list div div:first-child {
@@ -572,21 +573,25 @@ body {
     gap: var(--column-gap);
   }
   
-  /* Reduce main layout gaps on TV to minimize whitespace */
+  /* Center the second row with reduced gaps and margin boundaries on TV */
   .main-layout {
-    gap: clamp(2px, 0.3vw, 6px); /* Much smaller gaps between rows on TV */
+    gap: clamp(4px, 0.6vw, 8px); /* Reduced gaps between rows */
+    justify-content: center; /* Center the content vertically */
+    align-items: stretch; /* Stretch rows to fill available space */
+    padding: clamp(12px, 1.5vw, 20px) 0; /* Add margin boundaries for top/bottom rows */
   }
   
-  /* Better prayer times layout for TV */
+  /* Better prayer times layout for TV - More compact */
   .prayer-times h2 {
-    font-size: clamp(1.1rem, 2.5vw, 1.7rem);
-    margin-bottom: 8px;
+    font-size: clamp(1rem, 2.2vw, 1.5rem);
+    margin-bottom: 4px;
   }
   
   .prayer-times ul li {
-    font-size: clamp(0.9rem, 1.6vw, 1.1rem);
-    padding: clamp(8px, 1.2vw, 12px);
-    line-height: 1.2;
+    font-size: clamp(0.8rem, 1.4vw, 1rem);
+    padding: clamp(4px, 0.8vw, 8px);
+    line-height: 1.1;
+    margin-bottom: 2px;
   }
   
   /* Header optimization for TV */
@@ -603,15 +608,15 @@ body {
     object-fit: contain;
   }
   
-  /* Better QR code sizing for TV */
+  /* Better QR code sizing for TV - More compact */
   .qr-img {
-    width: clamp(60px, 10vw, 100px); /* Shrunk for TV displays */
-    height: clamp(60px, 10vw, 100px); /* Shrunk for TV displays */
+    width: clamp(50px, 8vw, 80px); /* More compact for TV displays */
+    height: clamp(50px, 8vw, 80px); /* More compact for TV displays */
   }
   
   .qr-list div div:first-child {
-    font-size: clamp(1rem, 1.5vw, 1.2rem);
-    margin-bottom: 8px;
+    font-size: clamp(0.9rem, 1.3vw, 1.1rem);
+    margin-bottom: 4px;
   }
   
   /* Announcements optimization for TV */
