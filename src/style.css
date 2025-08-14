@@ -10,9 +10,9 @@
   --row-gap: clamp(10px, 1.5vw, 20px); /* Reduced from 15px-30px to 10px-20px */
   --padding: clamp(15px, 2vw, 30px);
   --border-radius: clamp(8px, 1vw, 12px);
-  --min-height: clamp(30vh, 40vh, 50vh);
-  --header-height: clamp(12vh, 15vh, 18vh); /* Reduced from 15vh-25vh to 12vh-18vh */
-  --announcements-height: clamp(12vh, 15vh, 18vh); /* Reduced from 15vh-25vh to 12vh-18vh */
+  --min-height: clamp(35vh, 45vh, 55vh); /* Increased to compensate for reduced header/announcements heights */
+  --header-height: clamp(10.8vh, 13.5vh, 16.2vh); /* Reduced by 10% from 12vh-18vh to 10.8vh-16.2vh */
+  --announcements-height: clamp(10.8vh, 13.5vh, 16.2vh); /* Reduced by 10% from 12vh-18vh to 10.8vh-16.2vh */
 }
 
 /* Base styles with viewport-based units */
@@ -518,9 +518,9 @@ body {
 @media (min-width: 1920px) {
   /* 4K and ultra-wide TV optimization */
   :root {
-    --min-height: clamp(25vh, 35vh, 45vh);
-    --header-height: clamp(10vh, 12vh, 15vh); /* Reduced from 12vh-22vh to 10vh-15vh */
-    --announcements-height: clamp(10vh, 12vh, 15vh); /* Reduced from 12vh-22vh to 10vh-15vh */
+    --min-height: clamp(30vh, 40vh, 50vh); /* Increased to compensate for reduced header/announcements heights */
+    --header-height: clamp(9vh, 10.8vh, 13.5vh); /* Reduced by 10% from 10vh-15vh to 9vh-13.5vh */
+    --announcements-height: clamp(9vh, 10.8vh, 13.5vh); /* Reduced by 10% from 10vh-15vh to 9vh-13.5vh */
   }
   
   .content-row {
@@ -537,9 +537,9 @@ body {
 @media (min-width: 3840px) {
   /* 8K TV optimization */
   :root {
-    --min-height: clamp(20vh, 30vh, 40vh);
-    --header-height: clamp(8vh, 10vh, 12vh); /* Reduced from 10vh-20vh to 8vh-12vh */
-    --announcements-height: clamp(8vh, 10vh, 12vh); /* Reduced from 10vh-20vh to 8vh-12vh */
+    --min-height: clamp(25vh, 35vh, 45vh); /* Increased to compensate for reduced header/announcements heights */
+    --header-height: clamp(7.2vh, 9vh, 10.8vh); /* Reduced by 10% from 8vh-12vh to 7.2vh-10.8vh */
+    --announcements-height: clamp(7.2vh, 9vh, 10.8vh); /* Reduced by 10% from 8vh-12vh to 7.2vh-10.8vh */
   }
 }
 
@@ -554,9 +554,9 @@ body {
 @media (min-width: 1920px) and (max-aspect-ratio: 16/9) {
   /* 16:9 TV optimization */
   :root {
-    --min-height: clamp(25vh, 35vh, 40vh);
-    --header-height: clamp(8vh, 12vh, 15vh);
-    --announcements-height: clamp(8vh, 12vh, 15vh);
+    --min-height: clamp(30vh, 40vh, 45vh); /* Increased to compensate for reduced header/announcements heights */
+    --header-height: clamp(7.2vh, 10.8vh, 13.5vh); /* Reduced by 10% from 8vh-15vh to 7.2vh-13.5vh */
+    --announcements-height: clamp(7.2vh, 10.8vh, 13.5vh); /* Reduced by 10% from 8vh-15vh to 7.2vh-13.5vh */
     --column-gap: clamp(20px, 2.5vw, 35px);
     --row-gap: clamp(8px, 1vw, 15px);
     --padding: clamp(12px, 1.5vw, 25px);
@@ -566,8 +566,8 @@ body {
   
   /* Optimize content row for 16:9 */
   .content-row {
-    min-height: 45vh;
-    max-height: 55vh;
+    min-height: 50vh; /* Increased to compensate for reduced header/announcements heights */
+    max-height: 60vh; /* Increased to compensate for reduced header/announcements heights */
     gap: var(--column-gap);
   }
   
@@ -618,16 +618,16 @@ body {
 /* Ultra-wide TV optimization (beyond 16:9) */
 @media (min-width: 1920px) and (min-aspect-ratio: 16/9) {
   :root {
-    --min-height: clamp(20vh, 30vh, 35vh);
-    --header-height: clamp(6vh, 10vh, 12vh);
-    --announcements-height: clamp(6vh, 10vh, 12vh);
+    --min-height: clamp(25vh, 35vh, 40vh); /* Increased to compensate for reduced header/announcements heights */
+    --header-height: clamp(5.4vh, 9vh, 10.8vh); /* Reduced by 10% from 6vh-12vh to 5.4vh-10.8vh */
+    --announcements-height: clamp(5.4vh, 9vh, 10.8vh); /* Reduced by 10% from 6vh-12vh to 5.4vh-10.8vh */
     --column-gap: clamp(25px, 3vw, 45px);
     --row-gap: clamp(6px, 0.8vw, 12px);
     --padding: clamp(10px, 1.2vw, 20px);
   }
   
   .content-row {
-    min-height: 40vh;
-    max-height: 50vh;
+    min-height: 45vh; /* Increased to compensate for reduced header/announcements heights */
+    max-height: 55vh; /* Increased to compensate for reduced header/announcements heights */
   }
 }

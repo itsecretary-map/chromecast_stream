@@ -320,6 +320,7 @@ window.addEventListener('resize', optimizeForTV);
 // === Slideshow Logic ===
 let currentIdx = 0;
 const imgEl = document.getElementById('slideshow-img');
+let rotationCount = 0; // Track how many complete rotations we've done
 
 function showImage(idx) {
   if (availableImages.length === 0) {
@@ -363,8 +364,51 @@ function showImage(idx) {
 
 function nextImage() {
   if (availableImages.length === 0) return;
+  
+  // Check if we're about to complete a full rotation
+  if (currentIdx === availableImages.length - 1) {
+    rotationCount++;
+    console.log(`🔄 Completed rotation ${rotationCount} through ${availableImages.length} images`);
+    
+    // After completing a rotation, refresh images from GitHub
+    refreshImagesAfterRotation();
+  }
+  
   currentIdx = (currentIdx + 1) % availableImages.length;
   showImage(currentIdx);
+}
+
+// Function to refresh images after completing a rotation
+async function refreshImagesAfterRotation() {
+  console.log('🔄 Refreshing slideshow images after completing rotation...');
+  
+  try {
+    // Clear cache to ensure fresh data
+    clearImageCache();
+    
+    const freshImages = await fetchGitHubImages();
+    
+    if (freshImages.length > 0) {
+      const oldCount = availableImages.length;
+      availableImages = freshImages.map(img => img.url);
+      console.log(`✅ Refreshed slideshow: ${oldCount} → ${availableImages.length} images`);
+      
+      // Reset to first image and continue slideshow
+      currentIdx = 0;
+      showImage(currentIdx);
+      
+      // Log any new images found
+      if (availableImages.length > oldCount) {
+        console.log(`🎉 Found ${availableImages.length - oldCount} new images!`);
+      }
+    } else {
+      console.log('⚠️ No fresh images found, keeping current set');
+    }
+    
+  } catch (error) {
+    console.error('❌ Error refreshing images after rotation:', error);
+    console.log('🔄 Continuing with current image set');
+  }
 }
 
 // Initialize slideshow with GitHub images
@@ -587,6 +631,32 @@ initializeSlideshow();
 
 // Detect if running as Chromecast receiver and optimize layout
 detectAndOptimizeForChromecast();
+
+// === AUTO-RELOAD FUNCTIONALITY ===
+// Reload at midnight each day to ensure fresh content
+function scheduleReload() {
+  const now = new Date();
+  const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+  const timeUntilMidnight = tomorrow - now;
+  
+  console.log('🕛 Scheduling daily reload at midnight');
+  console.log('⏰ Current time:', now.toLocaleTimeString());
+  console.log('🌅 Next reload at:', tomorrow.toLocaleString());
+  console.log('⏳ Time until reload:', Math.round(timeUntilMidnight / 1000 / 60), 'minutes');
+  
+  setTimeout(() => {
+    console.log('🔄 Executing scheduled daily reload...');
+    window.location.reload();
+  }, timeUntilMidnight);
+  
+  // Schedule the next reload after this one
+  setTimeout(() => {
+    scheduleReload();
+  }, timeUntilMidnight);
+}
+
+// Start the reload scheduling
+scheduleReload();
 
 // Add cache debugging to console
 console.log('🔧 Cache Management Commands Available:');
