@@ -294,21 +294,21 @@ function optimizeForTV() {
     console.log(`TV detected: ${window.innerWidth}x${window.innerHeight}, aspect ratio: ${aspectRatio.toFixed(2)}`);
     
     if (aspectRatio <= 16/9) {
-      // 16:9 or narrower - optimize for standard TV (using CSS values)
-      document.documentElement.style.setProperty('--min-height', 'clamp(30vh, 40vh, 45vh)');
-      document.documentElement.style.setProperty('--header-height', 'clamp(7.2vh, 10.8vh, 13.5vh)');
-      document.documentElement.style.setProperty('--announcements-height', 'clamp(7.2vh, 10.8vh, 13.5vh)');
-      document.documentElement.style.setProperty('--column-gap', 'clamp(20px, 2.5vw, 35px)');
-      document.documentElement.style.setProperty('--row-gap', 'clamp(4px, 0.5vw, 8px)');
-      console.log('Applied 16:9 TV optimization (CSS-aligned)');
+      // 16:9 or narrower - optimize for standard TV (fixed percentage heights)
+      document.documentElement.style.setProperty('--header-height', '10vh');
+      document.documentElement.style.setProperty('--announcements-height', '10vh');
+      document.documentElement.style.setProperty('--content-height', '70vh');
+      document.documentElement.style.setProperty('--column-gap', '30px');
+      document.documentElement.style.setProperty('--row-gap', '4px');
+      console.log('Applied 16:9 TV optimization (fixed percentages)');
     } else {
-      // Ultra-wide - optimize for wide displays (using CSS values)
-      document.documentElement.style.setProperty('--min-height', 'clamp(25vh, 35vh, 40vh)');
-      document.documentElement.style.setProperty('--header-height', 'clamp(5.4vh, 9vh, 10.8vh)');
-      document.documentElement.style.setProperty('--announcements-height', 'clamp(5.4vh, 9vh, 10.8vh)');
-      document.documentElement.style.setProperty('--column-gap', 'clamp(25px, 3vw, 45px)');
-      document.documentElement.style.setProperty('--row-gap', 'clamp(3px, 0.4vw, 6px)');
-      console.log('Applied ultra-wide TV optimization (CSS-aligned)');
+      // Ultra-wide - optimize for wide displays (fixed percentage heights)
+      document.documentElement.style.setProperty('--header-height', '8vh');
+      document.documentElement.style.setProperty('--announcements-height', '8vh');
+      document.documentElement.style.setProperty('--content-height', '74vh');
+      document.documentElement.style.setProperty('--column-gap', '35px');
+      document.documentElement.style.setProperty('--row-gap', '3px');
+      console.log('Applied ultra-wide TV optimization (fixed percentages)');
     }
   }
 }
