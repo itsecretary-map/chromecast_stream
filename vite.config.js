@@ -18,6 +18,10 @@ export default defineConfig({
         {
           src: 'images',
           dest: '.'
+        },
+        {
+          src: 'CCA_5344-HDR.jpg',
+          dest: '.'
         }
       ]
     })
