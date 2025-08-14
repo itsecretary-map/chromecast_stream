@@ -40,7 +40,7 @@ body {
   max-width: min(1400px, 95vw);
   margin: 0 auto;
   min-height: 100vh;
-  justify-content: space-between; /* Ensure proper spacing */
+  justify-content: flex-start; /* Changed from space-between to reduce gaps on TV */
 }
 
 /* Header/Row 1 */
@@ -560,7 +560,7 @@ body {
     --header-height: clamp(7.2vh, 10.8vh, 13.5vh); /* Reduced by 10% from 8vh-15vh to 7.2vh-13.5vh */
     --announcements-height: clamp(7.2vh, 10.8vh, 13.5vh); /* Reduced by 10% from 8vh-15vh to 7.2vh-13.5vh */
     --column-gap: clamp(20px, 2.5vw, 35px);
-    --row-gap: clamp(8px, 1vw, 15px);
+    --row-gap: clamp(4px, 0.5vw, 8px); /* Reduced row gap for TV to minimize whitespace */
     --padding: clamp(12px, 1.5vw, 25px);
     --base-font-size: clamp(16px, 2.2vw, 28px);
     --header-font-size: clamp(1.4rem, 3.5vw, 2.5rem);
@@ -571,6 +571,11 @@ body {
     min-height: 50vh; /* Increased to compensate for reduced header/announcements heights */
     max-height: 60vh; /* Increased to compensate for reduced header/announcements heights */
     gap: var(--column-gap);
+  }
+  
+  /* Reduce main layout gaps on TV to minimize whitespace */
+  .main-layout {
+    gap: clamp(2px, 0.3vw, 6px); /* Much smaller gaps between rows on TV */
   }
   
   /* Better prayer times layout for TV */
