@@ -299,7 +299,7 @@ function optimizeForTV() {
       document.documentElement.style.setProperty('--header-height', 'clamp(7.2vh, 10.8vh, 13.5vh)');
       document.documentElement.style.setProperty('--announcements-height', 'clamp(7.2vh, 10.8vh, 13.5vh)');
       document.documentElement.style.setProperty('--column-gap', 'clamp(20px, 2.5vw, 35px)');
-      document.documentElement.style.setProperty('--row-gap', 'clamp(8px, 1vw, 15px)');
+      document.documentElement.style.setProperty('--row-gap', 'clamp(4px, 0.5vw, 8px)');
       console.log('Applied 16:9 TV optimization (CSS-aligned)');
     } else {
       // Ultra-wide - optimize for wide displays (using CSS values)
@@ -307,7 +307,7 @@ function optimizeForTV() {
       document.documentElement.style.setProperty('--header-height', 'clamp(5.4vh, 9vh, 10.8vh)');
       document.documentElement.style.setProperty('--announcements-height', 'clamp(5.4vh, 9vh, 10.8vh)');
       document.documentElement.style.setProperty('--column-gap', 'clamp(25px, 3vw, 45px)');
-      document.documentElement.style.setProperty('--row-gap', 'clamp(6px, 0.8vw, 12px)');
+      document.documentElement.style.setProperty('--row-gap', 'clamp(3px, 0.4vw, 6px)');
       console.log('Applied ultra-wide TV optimization (CSS-aligned)');
     }
   }
