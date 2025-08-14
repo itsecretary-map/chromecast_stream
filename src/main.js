@@ -582,6 +582,15 @@ function renderQrCodes() {
           console.error(`❌ Failed to load QR image: ${url}`);
           console.error(`❌ Image element:`, img);
           console.error(`❌ Image src:`, img.src);
+          
+          // Add fallback text if image fails to load
+          const fallbackText = document.createElement('div');
+          fallbackText.textContent = `QR Code: ${qrImageLabels[key] || key}`;
+          fallbackText.style.color = '#ff6b6b';
+          fallbackText.style.fontSize = '0.8rem';
+          fallbackText.style.textAlign = 'center';
+          fallbackText.style.marginTop = '5px';
+          wrapper.appendChild(fallbackText);
         };
         img.onload = () => {
           console.log(`✅ QR image loaded successfully: ${url}`);
@@ -603,6 +612,15 @@ function renderQrCodes() {
       console.log('🔍 Final QR list HTML:', qrList.innerHTML);
       console.log('🔍 QR list children count:', qrList.children.length);
       console.log('🔍 All image elements in QR list:', qrList.querySelectorAll('img'));
+      
+      // Add a retry mechanism if no images are found
+      if (qrList.children.length === 0) {
+        console.warn('⚠️ No QR codes rendered, retrying in 1 second...');
+        setTimeout(() => {
+          console.log('🔄 Retrying QR code rendering...');
+          renderQrCodes();
+        }, 1000);
+      }
     } else {
       console.error('❌ QR image URLs not available or invalid');
     }
@@ -619,12 +637,18 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     console.log('📄 DOM fully loaded, setting background image...');
     loadBackgroundImage();
-    renderQrCodes(); // Render QR codes when DOM is ready
+    // Add a small delay to ensure everything is ready
+    setTimeout(() => {
+      renderQrCodes(); // Render QR codes when DOM is ready
+    }, 100);
   });
 } else {
   console.log('📄 DOM already loaded, setting background image...');
   loadBackgroundImage();
-  renderQrCodes(); // Render QR codes immediately if DOM is already ready
+  // Add a small delay to ensure everything is ready
+  setTimeout(() => {
+    renderQrCodes(); // Render QR codes immediately if DOM is already ready
+  }, 100);
 }
 
 initializeSlideshow();
