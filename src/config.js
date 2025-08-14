@@ -15,8 +15,7 @@ export const slideshowImgUrls = [
 // Function to get GitHub Pages compatible image paths
 export function getImagePath(imageName) {
   const isGitHubPages = typeof window !== 'undefined' && (
-    window.location.hostname === 'itsecretary-map.github.io' || 
-    window.location.pathname.includes('/chromecast_stream/')
+    window.location.hostname === 'itsecretary-map.github.io'
   );
   
   if (isGitHubPages) {
@@ -28,8 +27,7 @@ export function getImagePath(imageName) {
 // Function to get GitHub Pages compatible QR code image paths
 export function getQrImagePath(imageName) {
   const isGitHubPages = typeof window !== 'undefined' && (
-    window.location.hostname === 'itsecretary-map.github.io' || 
-    window.location.pathname.includes('/chromecast_stream/')
+    window.location.hostname === 'itsecretary-map.github.io'
   );
   
   if (isGitHubPages) {
@@ -56,8 +54,7 @@ export const ayatHadithList = [
 // Using GitHub Pages compatible paths - only two QR codes to reduce row height
 export function getQrImageUrls() {
   const isGitHubPages = typeof window !== 'undefined' && (
-    window.location.hostname === 'itsecretary-map.github.io' || 
-    window.location.pathname.includes('/chromecast_stream/')
+    window.location.hostname === 'itsecretary-map.github.io'
   );
   
   if (isGitHubPages) {
