@@ -578,12 +578,19 @@ function renderQrCodes() {
         
         // Try multiple paths for the image
         const tryImagePaths = (imageKey) => {
-          const paths = [
-            url, // Original URL from config
+          const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+          
+          // Simple path logic: local uses relative, production uses absolute
+          const paths = isLocal ? [
             `./images/qr-codes/${imageKey === 'mapWebsite' ? 'mapitt.png' : 'whatsapp_group.png'}`,
-            `/chromecast_stream/images/qr-codes/${imageKey === 'mapWebsite' ? 'mapitt.png' : 'whatsapp_group.png'}`,
             `images/qr-codes/${imageKey === 'mapWebsite' ? 'mapitt.png' : 'whatsapp_group.png'}`
+          ] : [
+            `/chromecast_stream/images/qr-codes/${imageKey === 'mapWebsite' ? 'mapitt.png' : 'whatsapp_group.png'}`,
+            `./images/qr-codes/${imageKey === 'mapWebsite' ? 'mapitt.png' : 'whatsapp_group.png'}`
           ];
+          
+          // Add the original config URL as the first fallback
+          paths.unshift(url);
           
           let currentPathIndex = 0;
           
