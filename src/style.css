@@ -147,8 +147,9 @@ body {
   object-fit: contain;
   width: auto;
   height: auto;
-  /* Ensure image fits within container */
-  max-height: calc(100% - 2 * var(--padding));
+  /* Make images fill most of the container height */
+  max-height: calc(100% - var(--padding));
+  min-height: calc(100% - 2 * var(--padding));
 }
 
 /* QR Codes Column */
@@ -412,7 +413,8 @@ body {
   }
   
   .slideshow img {
-    max-height: 50vh;
+    max-height: calc(100% - var(--padding));
+    min-height: calc(100% - 2 * var(--padding));
   }
   
   .qr-img {
@@ -592,7 +594,8 @@ body {
   
   /* Optimize slideshow for TV */
   .slideshow img {
-    max-height: 90%;
+    max-height: calc(100% - var(--padding));
+    min-height: calc(100% - 2 * var(--padding));
     object-fit: contain;
   }
   
