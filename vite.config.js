@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
   base: '/chromecast_stream/', // Required for GitHub Pages deployment
@@ -11,4 +12,14 @@ export default defineConfig({
       usePolling: true, // Improves reliability in some dev environments
     },
   },
+  plugins: [
+    viteStaticCopy({
+      targets: [
+        {
+          src: 'images',
+          dest: '.'
+        }
+      ]
+    })
+  ],
 });
