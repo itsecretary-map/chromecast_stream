@@ -92,11 +92,11 @@ body {
 }
 
 .prayer-times h2 {
-  margin: 0 0 10px 0; /* Reduced from 15px to 10px */
+  margin: 0 0 6px 0; /* Much smaller margin */
   color: #fff;
-  font-size: clamp(0.9rem, 2vw, 1.5rem); /* Reduced font size further */
+  font-size: clamp(0.8rem, 1.8vw, 1.3rem); /* Smaller font size */
   text-align: center;
-  line-height: 1.1;
+  line-height: 1.0; /* Tighter line height */
 }
 
 .prayer-times ul {
@@ -113,12 +113,12 @@ body {
 .prayer-times ul li {
   background: rgba(255, 255, 255, 0.1);
   margin-bottom: 0;
-  padding: clamp(4px, 0.8vw, 8px); /* More compact padding */
+  padding: clamp(2px, 0.5vw, 6px); /* Much more compact padding */
   border-radius: calc(var(--border-radius) - 4px);
-  border-left: 3px solid #4CAF50; /* Reduced border width */
+  border-left: 2px solid #4CAF50; /* Even smaller border */
   color: #fff;
-  font-size: clamp(0.65rem, 1vw, 0.85rem); /* Smaller font for more compact layout */
-  line-height: 1.0; /* Tighter line height */
+  font-size: clamp(0.6rem, 0.9vw, 0.8rem); /* Much smaller font */
+  line-height: 0.9; /* Very tight line height */
   flex-shrink: 0;
 }
 
@@ -171,7 +171,7 @@ body {
 .qr-list {
   display: flex;
   flex-direction: column;
-  gap: clamp(8px, 1vw, 15px); /* More compact gap */
+  gap: clamp(4px, 0.6vw, 8px); /* Much more compact gap */
   align-items: center;
   justify-content: center;
   height: 100%;
@@ -187,13 +187,13 @@ body {
 .qr-list div div:first-child {
   font-weight: bold;
   color: #fff;
-  font-size: clamp(0.8rem, 1.2vw, 1rem); /* Reduced font size */
-  margin-bottom: 5px; /* Reduced margin */
+  font-size: clamp(0.7rem, 1vw, 0.9rem); /* Much smaller font */
+  margin-bottom: 3px; /* Much smaller margin */
 }
 
 .qr-img {
-  width: clamp(50px, 8vw, 80px); /* Shrunk QR images by ~30% */
-  height: clamp(50px, 8vw, 80px); /* Shrunk QR images by ~30% */
+  width: clamp(40px, 6vw, 60px); /* Much smaller QR images */
+  height: clamp(40px, 6vw, 60px); /* Much smaller QR images */
   border-radius: calc(var(--border-radius) - 4px);
 }
 
