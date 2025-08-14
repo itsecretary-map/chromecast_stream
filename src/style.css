@@ -558,7 +558,7 @@ body {
   :root {
     --header-height: 10vh; /* Fixed 10% of viewport height */
     --announcements-height: 10vh; /* Fixed 10% of viewport height */
-    --content-height: 80vh; /* Fixed 80% of viewport height for slideshow */
+    --content-height: 70vh; /* Fixed 70% of viewport height for slideshow */
     --column-gap: 30px; /* Fixed 30px gap */
     --row-gap: 4px; /* Fixed 4px gap between rows */
     --padding: 20px; /* Fixed 20px padding */
@@ -627,7 +627,7 @@ body {
   :root {
     --header-height: 8vh; /* Fixed 8% of viewport height */
     --announcements-height: 8vh; /* Fixed 8% of viewport height */
-    --content-height: 80vh; /* Fixed 80% of viewport height for slideshow */
+    --content-height: 74vh; /* Fixed 74% of viewport height for slideshow */
     --column-gap: 35px; /* Fixed 35px gap */
     --row-gap: 3px; /* Fixed 3px gap between rows */
     --padding: 15px; /* Fixed 15px padding */
