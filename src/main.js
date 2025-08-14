@@ -499,38 +499,54 @@ fetch(`https://api.aladhan.com/v1/timingsByAddress?address=${zipcode},${country}
   });
 
 // === QR Code Images ===
-// Use a map with descriptive keys for each QR code
+// Function to render QR codes
+function renderQrCodes() {
+  console.log('🔍 Rendering QR codes...');
+  const qrList = document.querySelector('.qr-list');
+  console.log('📍 QR list element:', qrList);
+  
+  if (qrList) {
+    const qrImageUrls = getQrImageUrls();
+    console.log('🖼️ QR image URLs:', qrImageUrls);
+    
+    if (qrImageUrls && typeof qrImageUrls === 'object') {
+      qrList.innerHTML = '';
+      Object.entries(qrImageUrls).forEach(([key, url], i) => {
+        console.log(`📱 Creating QR code ${i + 1}:`, key, url);
+        
+        const wrapper = document.createElement('div');
+        wrapper.style.display = 'flex';
+        wrapper.style.flexDirection = 'column';
+        wrapper.style.alignItems = 'center';
+        wrapper.style.marginBottom = '18px';
 
-// Map for QR code display names
-const qrList = document.querySelector('.qr-list');
-if (qrList) {
-  const qrImageUrls = getQrImageUrls();
-  if (qrImageUrls && typeof qrImageUrls === 'object') {
-    qrList.innerHTML = '';
-    Object.entries(qrImageUrls).forEach(([key, url], i) => {
-      const wrapper = document.createElement('div');
-      wrapper.style.display = 'flex';
-      wrapper.style.flexDirection = 'column';
-      wrapper.style.alignItems = 'center';
-      wrapper.style.marginBottom = '18px';
+        const label = document.createElement('div');
+        label.textContent = qrImageLabels[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase());
+        label.style.color = '#ffd600';
+        label.style.fontSize = '1.1rem';
+        label.style.marginBottom = '8px';
+        label.style.textAlign = 'center';
+        label.style.wordBreak = 'break-word';
 
-      const label = document.createElement('div');
-      label.textContent = qrImageLabels[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase());
-      label.style.color = '#ffd600';
-      label.style.fontSize = '1.1rem';
-      label.style.marginBottom = '8px';
-      label.style.textAlign = 'center';
-      label.style.wordBreak = 'break-word';
+        const img = document.createElement('img');
+        img.className = 'qr-img';
+        img.src = url;
+        img.alt = label.textContent;
+        
+        // Add error handling for image loading
+        img.onerror = () => console.error(`❌ Failed to load QR image: ${url}`);
+        img.onload = () => console.log(`✅ QR image loaded successfully: ${url}`);
 
-      const img = document.createElement('img');
-      img.className = 'qr-img';
-      img.src = url;
-      img.alt = label.textContent;
-
-      wrapper.appendChild(label);
-      wrapper.appendChild(img);
-      qrList.appendChild(wrapper);
-    });
+        wrapper.appendChild(label);
+        wrapper.appendChild(img);
+        qrList.appendChild(wrapper);
+      });
+      console.log('✅ QR codes rendered successfully');
+    } else {
+      console.error('❌ QR image URLs not available or invalid');
+    }
+  } else {
+    console.error('❌ QR list element not found');
   }
 }
 
@@ -542,10 +558,12 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     console.log('📄 DOM fully loaded, setting background image...');
     loadBackgroundImage();
+    renderQrCodes(); // Render QR codes when DOM is ready
   });
 } else {
   console.log('📄 DOM already loaded, setting background image...');
   loadBackgroundImage();
+  renderQrCodes(); // Render QR codes immediately if DOM is already ready
 }
 
 initializeSlideshow();
