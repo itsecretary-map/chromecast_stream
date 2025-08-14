@@ -574,29 +574,55 @@ function renderQrCodes() {
 
         const img = document.createElement('img');
         img.className = 'qr-img';
-        img.src = url;
         img.alt = label.textContent;
         
-        // Add error handling for image loading
-        img.onerror = () => {
-          console.error(`❌ Failed to load QR image: ${url}`);
-          console.error(`❌ Image element:`, img);
-          console.error(`❌ Image src:`, img.src);
+        // Try multiple paths for the image
+        const tryImagePaths = (imageKey) => {
+          const paths = [
+            url, // Original URL from config
+            `./images/qr-codes/${imageKey === 'mapWebsite' ? 'mapitt.png' : 'whatsapp_group.png'}`,
+            `/chromecast_stream/images/qr-codes/${imageKey === 'mapWebsite' ? 'mapitt.png' : 'whatsapp_group.png'}`,
+            `images/qr-codes/${imageKey === 'mapWebsite' ? 'mapitt.png' : 'whatsapp_group.png'}`
+          ];
           
-          // Add fallback text if image fails to load
-          const fallbackText = document.createElement('div');
-          fallbackText.textContent = `QR Code: ${qrImageLabels[key] || key}`;
-          fallbackText.style.color = '#ff6b6b';
-          fallbackText.style.fontSize = '0.8rem';
-          fallbackText.style.textAlign = 'center';
-          fallbackText.style.marginTop = '5px';
-          wrapper.appendChild(fallbackText);
+          let currentPathIndex = 0;
+          
+          const tryNextPath = () => {
+            if (currentPathIndex < paths.length) {
+              const currentPath = paths[currentPathIndex];
+              console.log(`🔄 Trying QR image path ${currentPathIndex + 1}/${paths.length}:`, currentPath);
+              img.src = currentPath;
+              currentPathIndex++;
+            } else {
+              // All paths failed, show fallback text
+              console.error(`❌ All paths failed for QR image: ${imageKey}`);
+              const fallbackText = document.createElement('div');
+              fallbackText.textContent = `QR Code: ${qrImageLabels[key] || key}`;
+              fallbackText.style.color = '#ff6b6b';
+              fallbackText.style.fontSize = '0.8rem';
+              fallbackText.style.textAlign = 'center';
+              fallbackText.style.marginTop = '5px';
+              wrapper.appendChild(fallbackText);
+            }
+          };
+          
+          img.onerror = () => {
+            console.error(`❌ Failed to load QR image from path:`, img.src);
+            tryNextPath();
+          };
+          
+          img.onload = () => {
+            console.log(`✅ QR image loaded successfully: ${img.src}`);
+            console.log(`✅ Image element:`, img);
+            console.log(`✅ Image dimensions:`, img.naturalWidth, 'x', img.naturalHeight);
+          };
+          
+          // Start with first path
+          tryNextPath();
         };
-        img.onload = () => {
-          console.log(`✅ QR image loaded successfully: ${url}`);
-          console.log(`✅ Image element:`, img);
-          console.log(`✅ Image dimensions:`, img.naturalWidth, 'x', img.naturalHeight);
-        };
+        
+        // Start trying to load the image
+        tryImagePaths(key);
         
         // Log the created image element
         console.log(`📸 Created image element for ${key}:`, img);

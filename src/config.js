@@ -53,9 +53,19 @@ export const ayatHadithList = [
 // QR Code Images and Labels
 // Using GitHub Pages compatible paths - only two QR codes to reduce row height
 export function getQrImageUrls() {
+  // More robust GitHub Pages detection
   const isGitHubPages = typeof window !== 'undefined' && (
-    window.location.hostname === 'itsecretary-map.github.io'
+    window.location.hostname === 'itsecretary-map.github.io' ||
+    window.location.pathname.includes('/chromecast_stream/') ||
+    window.location.href.includes('github.io')
   );
+  
+  console.log('🔍 GitHub Pages detection:', {
+    hostname: window.location.hostname,
+    pathname: window.location.pathname,
+    href: window.location.href,
+    isGitHubPages: isGitHubPages
+  });
   
   if (isGitHubPages) {
     return {
