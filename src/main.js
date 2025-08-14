@@ -534,14 +534,31 @@ function renderQrCodes() {
         img.alt = label.textContent;
         
         // Add error handling for image loading
-        img.onerror = () => console.error(`❌ Failed to load QR image: ${url}`);
-        img.onload = () => console.log(`✅ QR image loaded successfully: ${url}`);
+        img.onerror = () => {
+          console.error(`❌ Failed to load QR image: ${url}`);
+          console.error(`❌ Image element:`, img);
+          console.error(`❌ Image src:`, img.src);
+        };
+        img.onload = () => {
+          console.log(`✅ QR image loaded successfully: ${url}`);
+          console.log(`✅ Image element:`, img);
+          console.log(`✅ Image dimensions:`, img.naturalWidth, 'x', img.naturalHeight);
+        };
+        
+        // Log the created image element
+        console.log(`📸 Created image element for ${key}:`, img);
+        console.log(`🔗 Image src set to:`, url);
 
         wrapper.appendChild(label);
         wrapper.appendChild(img);
         qrList.appendChild(wrapper);
       });
       console.log('✅ QR codes rendered successfully');
+      
+      // Debug: Check what's actually in the DOM
+      console.log('🔍 Final QR list HTML:', qrList.innerHTML);
+      console.log('🔍 QR list children count:', qrList.children.length);
+      console.log('🔍 All image elements in QR list:', qrList.querySelectorAll('img'));
     } else {
       console.error('❌ QR image URLs not available or invalid');
     }
