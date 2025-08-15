@@ -140,14 +140,14 @@ html, body {
 }
 
 .prayer-times ul li {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05); /* Much more transparent background */
   margin-bottom: 0;
-  padding: clamp(2px, 0.5vw, 6px); /* Much more compact padding */
-  border-radius: calc(var(--border-radius) - 4px);
-  border-left: 2px solid #4CAF50; /* Even smaller border */
+  padding: clamp(1px, 0.3vw, 4px); /* Even more compact padding */
+  border-radius: calc(var(--border-radius) - 6px); /* Smaller border radius */
+  border-left: 1px solid #4CAF50; /* Minimal border */
   color: #fff;
   font-size: clamp(0.6rem, 0.9vw, 0.8rem); /* Much smaller font */
-  line-height: 0.9; /* Very tight line height */
+  line-height: 0.85; /* Even tighter line height */
   flex-shrink: 0;
 }
 
@@ -200,7 +200,7 @@ html, body {
 .qr-list {
   display: flex;
   flex-direction: column;
-  gap: clamp(4px, 0.6vw, 8px); /* Much more compact gap */
+  gap: clamp(2px, 0.4vw, 6px); /* Even more compact gap for better fit */
   align-items: center;
   justify-content: center;
   height: 100%;
@@ -210,19 +210,19 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(4px, 0.6vw, 8px); /* More compact gap */
+  gap: clamp(2px, 0.4vw, 6px); /* Even more compact gap for better fit */
 }
 
 .qr-list div div:first-child {
   font-weight: bold;
   color: #fff;
-  font-size: clamp(0.7rem, 1vw, 0.9rem); /* Much smaller font */
-  margin-bottom: 3px; /* Much smaller margin */
+  font-size: clamp(0.65rem, 0.9vw, 0.8rem); /* Even smaller font */
+  margin-bottom: 2px; /* Minimal margin for better fit */
 }
 
 .qr-img {
-  width: clamp(40px, 6vw, 60px); /* Much smaller QR images */
-  height: clamp(40px, 6vw, 60px); /* Much smaller QR images */
+  width: clamp(25px, 3.5vw, 35px); /* Much smaller to fit within boundaries */
+  height: clamp(25px, 3.5vw, 35px); /* Much smaller to fit within boundaries */
   border-radius: calc(var(--border-radius) - 4px);
 }
 
