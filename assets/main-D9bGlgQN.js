@@ -639,13 +639,25 @@ function renderQrCodes() {
         const tryImagePaths = (imageKey) => {
           const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
           
+          // Dynamic path logic for all QR codes
+          const getImageFileName = (key) => {
+            switch(key) {
+              case 'mapWebsite': return 'mapitt.png';
+              case 'communityWhatsApp': return 'whatsapp_group.png';
+              case 'donation': return 'mohid_donation.png';
+              default: return 'mapitt.png';
+            }
+          };
+          
+          const imageFileName = getImageFileName(imageKey);
+          
           // Simple path logic: local uses relative, production uses absolute
           const paths = isLocal ? [
-            `./images/qr-codes/${imageKey === 'mapWebsite' ? 'mapitt.png' : 'whatsapp_group.png'}`,
-            `images/qr-codes/${imageKey === 'mapWebsite' ? 'mapitt.png' : 'whatsapp_group.png'}`
+            `./images/qr-codes/${imageFileName}`,
+            `images/qr-codes/${imageFileName}`
           ] : [
-            `/chromecast_stream/images/qr-codes/${imageKey === 'mapWebsite' ? 'mapitt.png' : 'whatsapp_group.png'}`,
-            `./images/qr-codes/${imageKey === 'mapWebsite' ? 'mapitt.png' : 'whatsapp_group.png'}`
+            `/chromecast_stream/images/qr-codes/${imageFileName}`,
+            `./images/qr-codes/${imageFileName}`
           ];
           
           // Add the original config URL as the first fallback
