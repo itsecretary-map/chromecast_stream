@@ -63,14 +63,14 @@ function loadBackgroundImage() {
     console.log('📏 Image dimensions:', testImg.naturalWidth, 'x', testImg.naturalHeight);
     console.log('💾 Image size:', (testImg.naturalWidth * testImg.naturalHeight * 4 / 1024 / 1024).toFixed(2), 'MB (estimated)');
     
-    // Apply background image to body with !important to override any CSS
-    document.body.style.setProperty('background-image', `url('${testImg.src}')`, 'important');
-    document.body.style.setProperty('background-size', 'cover', 'important');
-    document.body.style.setProperty('background-position', 'center center', 'important');
-    document.body.style.setProperty('background-attachment', 'fixed', 'important');
-    document.body.style.setProperty('background-repeat', 'no-repeat', 'important');
+    // Apply background image to body - let CSS handle the styling
+    document.body.style.setProperty('background-image', `url('${testImg.src}')`);
+    document.body.style.setProperty('background-size', 'cover');
+    document.body.style.setProperty('background-position', 'center center');
+    document.body.style.setProperty('background-attachment', 'fixed');
+    document.body.style.setProperty('background-repeat', 'no-repeat');
     
-    console.log('🎨 Background image applied to body element with !important');
+    console.log('🎨 Background image applied to body element');
   };
   
   testImg.onerror = () => {
@@ -601,18 +601,13 @@ function renderQrCodes() {
         console.log(`📱 Creating QR code ${i + 1}:`, key, url);
         
         const wrapper = document.createElement('div');
-        wrapper.style.display = 'flex';
-        wrapper.style.flexDirection = 'column';
-        wrapper.style.alignItems = 'center';
-        wrapper.style.marginBottom = '18px';
+        wrapper.className = 'qr-wrapper';
+        // Remove all inline styles - let CSS handle everything!
 
         const label = document.createElement('div');
         label.textContent = qrImageLabels[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase());
-        label.style.color = '#ffd600';
-        label.style.fontSize = '1.1rem';
-        label.style.marginBottom = '8px';
-        label.style.textAlign = 'center';
-        label.style.wordBreak = 'break-word';
+        label.className = 'qr-label';
+        // Remove all inline styles - let CSS handle everything!
 
         const img = document.createElement('img');
         img.className = 'qr-img';
@@ -658,10 +653,8 @@ function renderQrCodes() {
               console.error(`❌ All paths failed for QR image: ${imageKey}`);
               const fallbackText = document.createElement('div');
               fallbackText.textContent = `QR Code: ${qrImageLabels[key] || key}`;
-              fallbackText.style.color = '#ff6b6b';
-              fallbackText.style.fontSize = '0.8rem';
-              fallbackText.style.textAlign = 'center';
-              fallbackText.style.marginTop = '5px';
+              fallbackText.className = 'qr-fallback';
+              // Remove all inline styles - let CSS handle everything!
               wrapper.appendChild(fallbackText);
             }
           };
