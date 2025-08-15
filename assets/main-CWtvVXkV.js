@@ -524,27 +524,48 @@ if (ayatsContent) {
 // === Prayer Times Logic ===
 function renderPrayerTimes() {
   console.log('🕌 Rendering prayer times...');
+  console.log('🔍 DOM ready state:', document.readyState);
+  console.log('🔍 Current URL:', window.location.href);
+  
   const prayerList = document.getElementById('prayer-times-list');
+  console.log('🔍 Prayer list element search result:', prayerList);
   
   if (!prayerList) {
     console.error('❌ Prayer times list element not found!');
+    console.error('🔍 Available elements with "prayer" in class or id:');
+    document.querySelectorAll('*').forEach(el => {
+      if (el.className && el.className.includes('prayer') || 
+          el.id && el.id.includes('prayer')) {
+        console.log('  - Found:', el.tagName, 'class:', el.className, 'id:', el.id);
+      }
+    });
     return;
   }
   
   console.log('✅ Found prayer times list element:', prayerList);
+  console.log('🔍 Prayer list current HTML:', prayerList.innerHTML);
+  console.log('🔍 Prayer list parent element:', prayerList.parentElement);
   
   // Clear existing content
   prayerList.innerHTML = '';
+  console.log('🔍 Cleared prayer list HTML');
   
   const zipcode = '15044';
   const country = 'US';
   
+  console.log('🌐 Fetching prayer times from API...');
+  
   fetch(`https://api.aladhan.com/v1/timingsByAddress?address=${zipcode},${country}`)
-    .then(res => res.json())
+    .then(res => {
+      console.log('📡 API response status:', res.status, res.statusText);
+      return res.json();
+    })
     .then(data => {
       console.log('✅ Prayer times API response:', data);
       const times = data.data.timings;
       const prayerOrder = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+      
+      console.log('📝 Processing prayer times...');
       
       prayerOrder.forEach(name => {
         let time = times[name];
@@ -568,6 +589,7 @@ function renderPrayerTimes() {
         li.className = 'prayer-time-item';
         prayerList.appendChild(li);
         console.log(`✅ Added prayer time: ${name}: ${time}`);
+        console.log(`🔍 Prayer list now has ${prayerList.children.length} children`);
       });
       
       // Add Jummah time
@@ -576,6 +598,8 @@ function renderPrayerTimes() {
       jummahLi.className = 'prayer-time-item';
       prayerList.appendChild(jummahLi);
       console.log('✅ Added Jummah time');
+      console.log(`🔍 Final prayer list has ${prayerList.children.length} children`);
+      console.log('🔍 Final prayer list HTML:', prayerList.innerHTML);
     })
     .catch((error) => {
       console.error('❌ Prayer times API failed, using fallback:', error);
@@ -588,6 +612,8 @@ function renderPrayerTimes() {
         { name: 'Maghrib', time: '08:34 PM' },
         { name: 'Isha', time: '10:02 PM' },
       ];
+      
+      console.log('🔄 Using fallback prayer times...');
       
       fallback.forEach(pt => {
         const li = document.createElement('li');
@@ -603,6 +629,7 @@ function renderPrayerTimes() {
       jummahLi.className = 'prayer-time-item';
       prayerList.appendChild(jummahLi);
       console.log('✅ Added fallback Jummah time');
+      console.log(`🔍 Final fallback prayer list has ${prayerList.children.length} children`);
     });
 }
 
