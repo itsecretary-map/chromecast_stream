@@ -731,13 +731,12 @@ document.addEventListener('DOMContentLoaded', () => {
       // Check current CSS variables
       const root = document.documentElement;
       const computedStyle = getComputedStyle(root);
-      console.log('🎨 Current CSS Variables:', {
-        headerHeight: computedStyle.getPropertyValue('--header-height'),
-        contentHeight: computedStyle.getPropertyValue('--content-height'),
-        ayatsHeight: computedStyle.getPropertyValue('--ayats-height'),
-        gap: computedStyle.getPropertyValue('--gap'),
-        padding: computedStyle.getPropertyValue('--padding')
-      });
+      console.log('🎨 Current CSS Variables:');
+      console.log('  - headerHeight:', computedStyle.getPropertyValue('--header-height'));
+      console.log('  - contentHeight:', computedStyle.getPropertyValue('--content-height'));
+      console.log('  - ayatsHeight:', computedStyle.getPropertyValue('--ayats-height'));
+      console.log('  - gap:', computedStyle.getPropertyValue('--gap'));
+      console.log('  - padding:', computedStyle.getPropertyValue('--padding'));
       
       // Check actual computed styles of elements
       const prayerTimes = document.querySelector('.prayer-times');
@@ -746,24 +745,26 @@ document.addEventListener('DOMContentLoaded', () => {
       
       if (prayerTimes) {
         const style = window.getComputedStyle(prayerTimes);
-        console.log('📏 Prayer Times Computed Styles:', {
-          height: style.height,
-          maxHeight: style.maxHeight,
-          overflow: style.overflow,
-          padding: style.padding,
-          margin: style.margin
-        });
+        console.log('📏 Prayer Times Computed Styles:');
+        console.log('  - height:', style.height);
+        console.log('  - maxHeight:', style.maxHeight);
+        console.log('  - overflow:', style.overflow);
+        console.log('  - padding:', style.padding);
+        console.log('  - margin:', style.margin);
+        console.log('  - display:', style.display);
+        console.log('  - position:', style.position);
       }
       
       if (qrCodes) {
         const style = window.getComputedStyle(qrCodes);
-        console.log('📏 QR Codes Computed Styles:', {
-          height: style.height,
-          maxHeight: style.maxHeight,
-          overflow: style.overflow,
-          padding: style.padding,
-          margin: style.margin
-        });
+        console.log('📏 QR Codes Computed Styles:');
+        console.log('  - height:', style.height);
+        console.log('  - maxHeight:', style.maxHeight);
+        console.log('  - overflow:', style.overflow);
+        console.log('  - padding:', style.padding);
+        console.log('  - margin:', style.margin);
+        console.log('  - display:', style.display);
+        console.log('  - position:', style.position);
       }
       
       // Check media query match
@@ -773,10 +774,9 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('📺 Media Query (960px-1200px):', mediaQuery960.matches);
       
       // Check viewport
-      console.log('📱 Viewport:', {
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
+      console.log('📱 Viewport:');
+      console.log('  - width:', window.innerWidth);
+      console.log('  - height:', window.innerHeight);
     });
   }
 });
