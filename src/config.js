@@ -5,13 +5,6 @@
 // Fallback image URLs (used if GitHub API fails)
 export const slideshowImgUrls = [
   // Fallback images - these will be used if GitHub integration fails
-  './images/slideshow/imam_schedule.jpg',
-  './images/slideshow/sundayschool.jpg',
-  './images/slideshow/fall retreat.jpg',
-  './images/slideshow/hajj dinner.jpg',
-  './images/slideshow/membership drive.jpg',
-  './images/slideshow/ping pong.jpg',
-  './images/slideshow/winter fundraiser.jpg'
 ];
 
 // Function to get GitHub Pages compatible image paths
