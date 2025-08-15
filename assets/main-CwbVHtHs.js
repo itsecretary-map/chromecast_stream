@@ -11,43 +11,23 @@ import {
 } from './config.js';
 
 // === VIEWPORT LOCKING FOR TV DISPLAYS ===
-// Lock viewport dimensions to prevent Chromecast from guessing wrong resolution
+// Simplified viewport handling to prevent conflicts
 function lockViewportDimensions() {
   const width = window.innerWidth;
   const height = window.innerHeight;
   
   console.log(`🔒 Detected screen dimensions: ${width}x${height}`);
   
-  // Don't force specific dimensions - let CSS handle layout
-  // Just prevent unwanted scaling and transformations
+  // Only prevent unwanted scaling - let CSS handle layout
   document.documentElement.style.transform = 'none';
   document.body.style.transform = 'none';
-  
-  // Ensure full viewport usage
-  document.documentElement.style.minWidth = '100%';
-  document.documentElement.style.minHeight = '100%';
-  document.body.style.minWidth = '100%';
-  document.body.style.minHeight = '100%';
 }
 
-// Listen for resize events and re-lock viewport
-window.addEventListener('resize', () => {
-  console.log('🔄 Resize event detected, re-locking viewport...');
-  lockViewportDimensions();
-});
-
-// Lock viewport immediately on load
+// Single event listener to avoid conflicts
 window.addEventListener('load', () => {
   console.log('📱 Page loaded, locking viewport dimensions...');
   lockViewportDimensions();
 });
-
-// Lock viewport on DOM ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', lockViewportDimensions);
-} else {
-  lockViewportDimensions();
-}
 
 // === BACKGROUND IMAGE LOADING ===
 function loadBackgroundImage() {
