@@ -740,7 +740,7 @@ console.log('🚀 Initializing Chromecast Receiver Demo...');
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     console.log('📄 DOM fully loaded, setting background image...');
-    loadBackgroundImage();
+    // loadBackgroundImage();
     // Add a small delay to ensure everything is ready
     setTimeout(() => {
       renderQrCodes(); // Render QR codes when DOM is ready
@@ -748,7 +748,7 @@ if (document.readyState === 'loading') {
   });
 } else {
   console.log('📄 DOM already loaded, setting background image...');
-  loadBackgroundImage();
+  // loadBackgroundImage();
   // Add a small delay to ensure everything is ready
   setTimeout(() => {
     renderQrCodes(); // Render QR codes immediately if DOM is already ready
