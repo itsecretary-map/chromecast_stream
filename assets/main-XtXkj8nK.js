@@ -522,67 +522,89 @@ if (ayatsContent) {
 
 
 // === Prayer Times Logic ===
-// Fetch prayer times for zipcode 15044 (Gibsonia, PA) but do not display the location
-const zipcode = '15044';
-const country = 'US';
-const prayerList = document.getElementById('prayer-times-list');
-
-fetch(`https://api.aladhan.com/v1/timingsByAddress?address=${zipcode},${country}`)
-  .then(res => res.json())
-  .then(data => {
-    const times = data.data.timings;
-    const prayerOrder = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-    prayerOrder.forEach(name => {
-      let time = times[name];
-      // Convert to 12-hour format with AM/PM if needed
-      if (time) {
-        let [h, m] = time.split(':');
-        let hour = parseInt(h, 10);
-        let ampm = 'AM';
-        if (hour === 0) {
-          hour = 12;
-        } else if (hour === 12) {
-          ampm = 'PM';
-        } else if (hour > 12) {
-          hour -= 12;
-          ampm = 'PM';
+function renderPrayerTimes() {
+  console.log('🕌 Rendering prayer times...');
+  const prayerList = document.getElementById('prayer-times-list');
+  
+  if (!prayerList) {
+    console.error('❌ Prayer times list element not found!');
+    return;
+  }
+  
+  console.log('✅ Found prayer times list element:', prayerList);
+  
+  // Clear existing content
+  prayerList.innerHTML = '';
+  
+  const zipcode = '15044';
+  const country = 'US';
+  
+  fetch(`https://api.aladhan.com/v1/timingsByAddress?address=${zipcode},${country}`)
+    .then(res => res.json())
+    .then(data => {
+      console.log('✅ Prayer times API response:', data);
+      const times = data.data.timings;
+      const prayerOrder = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+      
+      prayerOrder.forEach(name => {
+        let time = times[name];
+        if (time) {
+          let [h, m] = time.split(':');
+          let hour = parseInt(h, 10);
+          let ampm = 'AM';
+          if (hour === 0) {
+            hour = 12;
+          } else if (hour === 12) {
+            ampm = 'PM';
+          } else if (hour > 12) {
+            hour -= 12;
+            ampm = 'PM';
+          }
+          time = `${hour}:${m} ${ampm}`;
         }
-        time = `${hour}:${m} ${ampm}`;
-      }
-      const li = document.createElement('li');
-      li.textContent = `${name}: ${time}`;
-      prayerList.appendChild(li);
+        
+        const li = document.createElement('li');
+        li.textContent = `${name}: ${time}`;
+        li.className = 'prayer-time-item';
+        prayerList.appendChild(li);
+        console.log(`✅ Added prayer time: ${name}: ${time}`);
+      });
+      
+      // Add Jummah time
+      const jummahLi = document.createElement('li');
+      jummahLi.textContent = 'Jummah: 1:15 PM';
+      jummahLi.className = 'prayer-time-item';
+      prayerList.appendChild(jummahLi);
+      console.log('✅ Added Jummah time');
+    })
+    .catch((error) => {
+      console.error('❌ Prayer times API failed, using fallback:', error);
+      
+      // fallback static times if API fails
+      const fallback = [
+        { name: 'Fajr', time: '05:12 AM' },
+        { name: 'Dhuhr', time: '01:23 PM' },
+        { name: 'Asr', time: '05:07 PM' },
+        { name: 'Maghrib', time: '08:34 PM' },
+        { name: 'Isha', time: '10:02 PM' },
+      ];
+      
+      fallback.forEach(pt => {
+        const li = document.createElement('li');
+        li.textContent = `${pt.name}: ${pt.time}`;
+        li.className = 'prayer-time-item';
+        prayerList.appendChild(li);
+        console.log(`✅ Added fallback prayer time: ${pt.name}: ${pt.time}`);
+      });
+      
+      // Add Jummah time to fallback as well
+      const jummahLi = document.createElement('li');
+      jummahLi.textContent = 'Jummah: 1:15 PM';
+      jummahLi.className = 'prayer-time-item';
+      prayerList.appendChild(jummahLi);
+      console.log('✅ Added fallback Jummah time');
     });
-    // Add Jummah time
-    const jummahLi = document.createElement('li');
-    jummahLi.textContent = 'Jummah: 1:15 PM';
-    prayerList.appendChild(jummahLi);
-  })
-  .catch(() => {
-    // fallback static times if API fails
-    const fallback = [
-      { name: 'Fajr', time: '05:12 AM' },
-      { name: 'Dhuhr', time: '01:23 PM' },
-      { name: 'Asr', time: '05:07 PM' },
-      { name: 'Maghrib', time: '08:34 PM' },
-      { name: 'Isha', time: '10:02 PM' },
-    ];
-    fallback.forEach(pt => {
-      // Convert fallback time to 12-hour format with AM/PM if needed
-      let [h, m, ap] = pt.time.match(/(\d+):(\d+)\s*(AM|PM)/i) || [];
-      let time = pt.time;
-      if (h && m && ap) {
-        time = `${parseInt(h, 10)}:${m} ${ap.toUpperCase()}`;
-      }
-      const li = document.createElement('li');
-      li.textContent = `${pt.name}: ${time}`;
-      prayerList.appendChild(li);
-    });
-    // Add Jummah time to fallback as well
-    const jummahLi = document.createElement('li');
-    jummahLi.textContent = 'Jummah: 1:15 PM';
-    prayerList.appendChild(jummahLi);
-  });
+}
 
 // === QR Code Images ===
 // Function to render QR codes
@@ -828,6 +850,7 @@ if (document.readyState === 'loading') {
     loadBackgroundImage();
     // Add a small delay to ensure everything is ready
     setTimeout(() => {
+      renderPrayerTimes(); // Render prayer times when DOM is ready
       renderQrCodes(); // Render QR codes when DOM is ready
     }, 100);
   });
@@ -836,6 +859,7 @@ if (document.readyState === 'loading') {
   loadBackgroundImage();
   // Add a small delay to ensure everything is ready
   setTimeout(() => {
+    renderPrayerTimes(); // Render prayer times immediately if DOM is already ready
     renderQrCodes(); // Render QR codes immediately if DOM is already ready
   }, 100);
 }
