@@ -63,14 +63,14 @@ function loadBackgroundImage() {
     console.log('📏 Image dimensions:', testImg.naturalWidth, 'x', testImg.naturalHeight);
     console.log('💾 Image size:', (testImg.naturalWidth * testImg.naturalHeight * 4 / 1024 / 1024).toFixed(2), 'MB (estimated)');
     
-    // Apply background image to body with !important to override any CSS
-    document.body.style.setProperty('background-image', `url('${testImg.src}')`, 'important');
-    document.body.style.setProperty('background-size', 'cover', 'important');
-    document.body.style.setProperty('background-position', 'center center', 'important');
-    document.body.style.setProperty('background-attachment', 'fixed', 'important');
-    document.body.style.setProperty('background-repeat', 'no-repeat', 'important');
+    // Apply background image to body - let CSS handle the styling
+    document.body.style.setProperty('background-image', `url('${testImg.src}')`);
+    document.body.style.setProperty('background-size', 'cover');
+    document.body.style.setProperty('background-position', 'center center');
+    document.body.style.setProperty('background-attachment', 'fixed');
+    document.body.style.setProperty('background-repeat', 'no-repeat');
     
-    console.log('🎨 Background image applied to body element with !important');
+    console.log('🎨 Background image applied to body element');
   };
   
   testImg.onerror = () => {
@@ -522,67 +522,116 @@ if (ayatsContent) {
 
 
 // === Prayer Times Logic ===
-// Fetch prayer times for zipcode 15044 (Gibsonia, PA) but do not display the location
-const zipcode = '15044';
-const country = 'US';
-const prayerList = document.getElementById('prayer-times-list');
-
-fetch(`https://api.aladhan.com/v1/timingsByAddress?address=${zipcode},${country}`)
-  .then(res => res.json())
-  .then(data => {
-    const times = data.data.timings;
-    const prayerOrder = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-    prayerOrder.forEach(name => {
-      let time = times[name];
-      // Convert to 12-hour format with AM/PM if needed
-      if (time) {
-        let [h, m] = time.split(':');
-        let hour = parseInt(h, 10);
-        let ampm = 'AM';
-        if (hour === 0) {
-          hour = 12;
-        } else if (hour === 12) {
-          ampm = 'PM';
-        } else if (hour > 12) {
-          hour -= 12;
-          ampm = 'PM';
+function renderPrayerTimes() {
+  console.log('🕌 Rendering prayer times...');
+  console.log('🔍 DOM ready state:', document.readyState);
+  console.log('🔍 Current URL:', window.location.href);
+  
+  const prayerList = document.getElementById('prayer-times-list');
+  console.log('🔍 Prayer list element search result:', prayerList);
+  
+  if (!prayerList) {
+    console.error('❌ Prayer times list element not found!');
+    console.error('🔍 Available elements with "prayer" in class or id:');
+    document.querySelectorAll('*').forEach(el => {
+      if (el.className && el.className.includes('prayer') || 
+          el.id && el.id.includes('prayer')) {
+        console.log('  - Found:', el.tagName, 'class:', el.className, 'id:', el.id);
+      }
+    });
+    return;
+  }
+  
+  console.log('✅ Found prayer times list element:', prayerList);
+  console.log('🔍 Prayer list current HTML:', prayerList.innerHTML);
+  console.log('🔍 Prayer list parent element:', prayerList.parentElement);
+  
+  // Clear existing content
+  prayerList.innerHTML = '';
+  console.log('🔍 Cleared prayer list HTML');
+  
+  const zipcode = '15044';
+  const country = 'US';
+  
+  console.log('🌐 Fetching prayer times from API...');
+  
+  fetch(`https://api.aladhan.com/v1/timingsByAddress?address=${zipcode},${country}`)
+    .then(res => {
+      console.log('📡 API response status:', res.status, res.statusText);
+      return res.json();
+    })
+    .then(data => {
+      console.log('✅ Prayer times API response:', data);
+      const times = data.data.timings;
+      const prayerOrder = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+      
+      console.log('📝 Processing prayer times...');
+      
+      prayerOrder.forEach(name => {
+        let time = times[name];
+        if (time) {
+          let [h, m] = time.split(':');
+          let hour = parseInt(h, 10);
+          let ampm = 'AM';
+          if (hour === 0) {
+            hour = 12;
+          } else if (hour === 12) {
+            ampm = 'PM';
+          } else if (hour > 12) {
+            hour -= 12;
+            ampm = 'PM';
+          }
+          time = `${hour}:${m} ${ampm}`;
         }
-        time = `${hour}:${m} ${ampm}`;
-      }
-      const li = document.createElement('li');
-      li.textContent = `${name}: ${time}`;
-      prayerList.appendChild(li);
+        
+        const li = document.createElement('li');
+        li.textContent = `${name}: ${time}`;
+        li.className = 'prayer-time-item';
+        prayerList.appendChild(li);
+        console.log(`✅ Added prayer time: ${name}: ${time}`);
+        console.log(`🔍 Prayer list now has ${prayerList.children.length} children`);
+      });
+      
+      // Add Jummah time
+      const jummahLi = document.createElement('li');
+      jummahLi.textContent = 'Jummah: 1:15 PM';
+      jummahLi.className = 'prayer-time-item';
+      prayerList.appendChild(jummahLi);
+      console.log('✅ Added Jummah time');
+      console.log(`🔍 Final prayer list has ${prayerList.children.length} children`);
+      console.log('🔍 Final prayer list HTML:', prayerList.innerHTML);
+    })
+    .catch((error) => {
+      console.error('❌ Prayer times API failed, using fallback:', error);
+      
+      // fallback static times if API fails
+      const fallback = [
+        { name: 'Fajr', time: '05:12 AM' },
+        { name: 'Dhuhr', time: '01:23 PM' },
+        { name: 'Asr', time: '05:07 PM' },
+        { name: 'Maghrib', time: '08:34 PM' },
+        { name: 'Isha', time: '10:02 PM' },
+      ];
+      
+      console.log('🔄 Using fallback prayer times...');
+      
+      fallback.forEach(pt => {
+        const li = document.createElement('li');
+        li.textContent = `${pt.name}: ${pt.time}`;
+        li.className = 'prayer-time-item';
+        prayerList.appendChild(li);
+        console.log(`✅ Added fallback prayer time: ${pt.name}: ${pt.time}`);
+      });
+      
+      // Add Jummah time to fallback as well
+      const jummahLi = document.createElement('li');
+      jummahLi.textContent = 'Jummah: 1:15 PM';
+      jummahLi.className = 'prayer-time-item';
+      prayerList.appendChild(jummahLi);
+      console.log('✅ Added fallback Jummah time');
+      console.log(`🔍 Final fallback prayer list has ${prayerList.children.length} children`);
     });
-    // Add Jummah time
-    const jummahLi = document.createElement('li');
-    jummahLi.textContent = 'Jummah: 1:15 PM';
-    prayerList.appendChild(jummahLi);
-  })
-  .catch(() => {
-    // fallback static times if API fails
-    const fallback = [
-      { name: 'Fajr', time: '05:12 AM' },
-      { name: 'Dhuhr', time: '01:23 PM' },
-      { name: 'Asr', time: '05:07 PM' },
-      { name: 'Maghrib', time: '08:34 PM' },
-      { name: 'Isha', time: '10:02 PM' },
-    ];
-    fallback.forEach(pt => {
-      // Convert fallback time to 12-hour format with AM/PM if needed
-      let [h, m, ap] = pt.time.match(/(\d+):(\d+)\s*(AM|PM)/i) || [];
-      let time = pt.time;
-      if (h && m && ap) {
-        time = `${parseInt(h, 10)}:${m} ${ap.toUpperCase()}`;
-      }
-      const li = document.createElement('li');
-      li.textContent = `${pt.name}: ${time}`;
-      prayerList.appendChild(li);
-    });
-    // Add Jummah time to fallback as well
-    const jummahLi = document.createElement('li');
-    jummahLi.textContent = 'Jummah: 1:15 PM';
-    prayerList.appendChild(jummahLi);
-  });
+}
 
 // === QR Code Images ===
 // Function to render QR codes
@@ -601,18 +650,13 @@ function renderQrCodes() {
         console.log(`📱 Creating QR code ${i + 1}:`, key, url);
         
         const wrapper = document.createElement('div');
-        wrapper.style.display = 'flex';
-        wrapper.style.flexDirection = 'column';
-        wrapper.style.alignItems = 'center';
-        wrapper.style.marginBottom = '18px';
+        wrapper.className = 'qr-wrapper';
+        // Remove all inline styles - let CSS handle everything!
 
         const label = document.createElement('div');
         label.textContent = qrImageLabels[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase());
-        label.style.color = '#ffd600';
-        label.style.fontSize = '1.1rem';
-        label.style.marginBottom = '8px';
-        label.style.textAlign = 'center';
-        label.style.wordBreak = 'break-word';
+        label.className = 'qr-label';
+        // Remove all inline styles - let CSS handle everything!
 
         const img = document.createElement('img');
         img.className = 'qr-img';
@@ -627,6 +671,7 @@ function renderQrCodes() {
             switch(key) {
               case 'mapWebsite': return 'mapitt.png';
               case 'communityWhatsApp': return 'whatsapp_group.png';
+              case 'donation': return 'mohid_donation.png';
               default: return 'mapitt.png';
             }
           };
@@ -658,10 +703,8 @@ function renderQrCodes() {
               console.error(`❌ All paths failed for QR image: ${imageKey}`);
               const fallbackText = document.createElement('div');
               fallbackText.textContent = `QR Code: ${qrImageLabels[key] || key}`;
-              fallbackText.style.color = '#ff6b6b';
-              fallbackText.style.fontSize = '0.8rem';
-              fallbackText.style.textAlign = 'center';
-              fallbackText.style.marginTop = '5px';
+              fallbackText.className = 'qr-fallback';
+              // Remove all inline styles - let CSS handle everything!
               wrapper.appendChild(fallbackText);
             }
           };
@@ -718,6 +761,116 @@ function renderQrCodes() {
 // Initialize everything when the page loads
 console.log('🚀 Initializing Chromecast Receiver Demo...');
 
+// DEBUG: Add debug button functionality
+document.addEventListener('DOMContentLoaded', () => {
+  const debugBtn = document.getElementById('debugBtn');
+  if (debugBtn) {
+    debugBtn.addEventListener('click', () => {
+      console.log('🔍 DEBUG BUTTON CLICKED');
+      
+      // Force apply debug styles
+      document.body.style.border = '10px solid yellow';
+      
+      // Check current CSS variables
+      const root = document.documentElement;
+      const computedStyle = getComputedStyle(root);
+      console.log('🎨 Current CSS Variables:');
+      console.log('  - headerHeight:', computedStyle.getPropertyValue('--header-height'));
+      console.log('  - contentHeight:', computedStyle.getPropertyValue('--content-height'));
+      console.log('  - ayatsHeight:', computedStyle.getPropertyValue('--ayats-height'));
+      console.log('  - gap:', computedStyle.getPropertyValue('--gap'));
+      console.log('  - padding:', computedStyle.getPropertyValue('--padding'));
+      
+      // Check actual computed styles of elements
+      const prayerTimes = document.querySelector('.prayer-times');
+      const qrCodes = document.querySelector('.qr-codes');
+      const slideshow = document.querySelector('.slideshow');
+      
+      if (prayerTimes) {
+        const style = window.getComputedStyle(prayerTimes);
+        console.log('📏 Prayer Times Computed Styles:');
+        console.log('  - height:', style.height);
+        console.log('  - maxHeight:', style.maxHeight);
+        console.log('  - overflow:', style.overflow);
+        console.log('  - padding:', style.padding);
+        console.log('  - margin:', style.margin);
+        console.log('  - display:', style.display);
+        console.log('  - position:', style.position);
+      }
+      
+      if (qrCodes) {
+        const style = window.getComputedStyle(qrCodes);
+        console.log('📏 QR Codes Computed Styles:');
+        console.log('  - height:', style.height);
+        console.log('  - maxHeight:', style.maxHeight);
+        console.log('  - overflow:', style.overflow);
+        console.log('  - padding:', style.padding);
+        console.log('  - margin:', style.margin);
+        console.log('  - display:', style.display);
+        console.log('  - position:', style.position);
+      }
+      
+      // Check media query match
+      const mediaQuery1920 = window.matchMedia('(min-width: 1920px)');
+      const mediaQuery960 = window.matchMedia('(min-width: 960px) and (max-width: 1200px)');
+      console.log('📺 Media Query (min-width: 1920px):', mediaQuery1920.matches);
+      console.log('📺 Media Query (960px-1200px):', mediaQuery960.matches);
+      
+      // Check viewport
+      console.log('📱 Viewport:');
+      console.log('  - width:', window.innerWidth);
+      console.log('  - height:', window.innerHeight);
+    });
+  }
+});
+
+// DEBUG: Log screen dimensions and CSS variables
+console.log('📱 Screen Dimensions:', {
+  width: window.innerWidth,
+  height: window.innerHeight,
+  screenWidth: screen.width,
+  screenHeight: screen.height,
+  devicePixelRatio: window.devicePixelRatio
+});
+
+// DEBUG: Check if CSS variables are being applied
+setTimeout(() => {
+  const root = document.documentElement;
+  const computedStyle = getComputedStyle(root);
+  console.log('🎨 CSS Variables Applied:', {
+    headerHeight: computedStyle.getPropertyValue('--header-height'),
+    contentHeight: computedStyle.getPropertyValue('--content-height'),
+    ayatsHeight: computedStyle.getPropertyValue('--ayats-height'),
+    gap: computedStyle.getPropertyValue('--gap'),
+    padding: computedStyle.getPropertyValue('--padding')
+  });
+  
+  // DEBUG: Check actual element dimensions
+  const prayerTimes = document.querySelector('.prayer-times');
+  const qrCodes = document.querySelector('.qr-codes');
+  const slideshow = document.querySelector('.slideshow');
+  
+  if (prayerTimes) {
+    const rect = prayerTimes.getBoundingClientRect();
+    console.log('📏 Prayer Times Element:', {
+      width: rect.width,
+      height: rect.height,
+      top: rect.top,
+      left: rect.left
+    });
+  }
+  
+  if (qrCodes) {
+    const rect = qrCodes.getBoundingClientRect();
+    console.log('📏 QR Codes Element:', {
+      width: rect.width,
+      height: rect.height,
+      top: rect.top,
+      left: rect.left
+    });
+  }
+}, 1000);
+
 // Ensure DOM is fully loaded before setting background
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
@@ -725,6 +878,7 @@ if (document.readyState === 'loading') {
     loadBackgroundImage();
     // Add a small delay to ensure everything is ready
     setTimeout(() => {
+      renderPrayerTimes(); // Render prayer times when DOM is ready
       renderQrCodes(); // Render QR codes when DOM is ready
     }, 100);
   });
@@ -733,6 +887,7 @@ if (document.readyState === 'loading') {
   loadBackgroundImage();
   // Add a small delay to ensure everything is ready
   setTimeout(() => {
+    renderPrayerTimes(); // Render prayer times immediately if DOM is already ready
     renderQrCodes(); // Render QR codes immediately if DOM is already ready
   }, 100);
 }

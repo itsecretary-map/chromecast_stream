@@ -11,80 +11,53 @@ html, body {
   background: url('./CCA_5344-HDR.jpg') no-repeat center center;
   background-size: cover;
   background-position: center;
-  background-color: rgba(26, 26, 26, 0.1); /* Fallback color while image loads */
+  background-color: rgba(26, 26, 26, 0.1);
   color: white;
   font-family: 'Arial', 'Helvetica Neue', 'Helvetica', sans-serif;
-  font-display: swap;
   overflow: hidden;
-  /* width: 1920px; */
-  /* height: 1080px; */
-}
-
-/* CSS Custom Properties for Percentage-Based Layout */
-:root {
-  /* Row Heights - Percentage Based */
-  --header-height: 10vh;        /* 10% of viewport height */
-  --content-height: 70vh;       /* 70% of viewport height */
-  --ayats-height: 10vh;         /* 10% of viewport height */
-  
-  /* Spacing */
-  --gap: 2vh;                   /* 2% gap between rows */
-  --padding: 2vh;               /* 2% padding within sections */
-  
-  /* Font Sizes - Viewport Based */
-  --header-font-size: 3vh;      /* 3% of viewport height */
-  --content-font-size: 2vh;     /* 2% of viewport height */
-  --small-font-size: 1.5vh;     /* 1.5% of viewport height */
-  
-  /* Column Widths - Middle Row */
-  --col1-width: 25%;            /* Prayer times: 25% */
-  --col2-width: 50%;            /* Slideshow: 50% */
-  --col3-width: 25%;            /* QR codes: 25% */
 }
 
 /* Main Layout Container */
 .main-layout {
   height: 100vh;
   width: 100vw;
-  max-width: 100vw;
   display: flex;
   flex-direction: column;
-  gap: var(--gap);
-  padding: var(--padding);
+  gap: 0;
+  padding: 0;
   overflow: hidden;
 }
 
-/* Row 1: Header (10%) */
+/* Row 1: Header */
 .header {
-  height: var(--header-height);
-  background: rgba(26, 26, 26, 0.7);
+  height: 60px;
+  background: rgba(26, 26, 26, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--header-font-size);
+  font-size: 18px;
   font-weight: bold;
-  font-display: swap;
   text-align: center;
-  padding: var(--padding);
+  padding: 10px;
   border-radius: 8px;
-  overflow: hidden;
+  margin: 10px;
 }
 
-/* Row 2: Content Row (70%) - Three Columns */
+/* Row 2: Content Row - Three Columns */
 .content-row {
-  height: var(--content-height);
+  height: calc(100vh - 140px);
   display: grid;
-  grid-template-columns: var(--col1-width) var(--col2-width) var(--col3-width);
-  gap: var(--gap);
+  grid-template-columns: 25% 50% 25%;
+  gap: 10px;
   align-items: stretch;
-  max-width: 100%;
+  padding: 0 10px;
   overflow: hidden;
 }
 
-/* Column 1: Prayer Times (100% of column height) */
+/* Column 1: Prayer Times */
 .prayer-times {
-  background: rgba(26, 26, 26, 0.7);
-  padding: var(--padding);
+  background: rgba(26, 26, 26, 0.8);
+  padding: 15px;
   border-radius: 8px;
   overflow: hidden;
   display: flex;
@@ -92,7 +65,6 @@ html, body {
   height: 100%;
 }
 
-/* Prayer Times Section (100% of column height) */
 .prayer-times .prayer-section {
   height: 100%;
   display: flex;
@@ -100,188 +72,162 @@ html, body {
 }
 
 .prayer-times .prayer-section h2 {
-  font-size: calc(var(--content-font-size) * 1.1);
-  margin-bottom: 0.4vh;
-  text-align: center;
   color: #ffd700;
-  height: 2vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 16px;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
 .prayer-times .prayer-section ul {
   list-style: none;
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  gap: 0.1vh;
+  overflow-y: auto;
+  padding: 0;
 }
 
 .prayer-times .prayer-section ul li {
-  font-size: calc(var(--small-font-size) * 0.9);
-  padding: 0.2vh 0.5vh;
-  background: rgba(255, 255, 255, 0.1);
-  margin-bottom: 0.1vh;
-  border-left: 2px solid #ffd700;
-  border-radius: 3px;
-  line-height: 1.0;
-  text-align: center;
+  color: #ffffff;
+  font-size: 14px;
+  padding: 8px 10px;
+  margin-bottom: 5px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  line-height: 1.4;
 }
 
-/* Column 2: Slideshow (50%) */
+/* Column 2: Slideshow */
 .slideshow {
-  background: rgba(26, 26, 26, 0.7);
-  padding: var(--padding);
+  background: rgba(26, 26, 26, 0.8);
+  padding: 15px;
   border-radius: 8px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
 }
 
 .slideshow img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  border-radius: 4px;
 }
 
-/* Column 3: QR Codes (25%) */
+/* Column 3: QR Codes */
 .qr-codes {
-  background: rgba(26, 26, 26, 0.7);
-  padding: var(--padding);
+  background: rgba(26, 26, 26, 0.8);
+  padding: 15px;
   border-radius: 8px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  max-width: 100%;
-  word-wrap: break-word;
-}
-
-.qr-codes h2 {
-  font-size: var(--content-font-size);
-  margin-bottom: 1vh;
-  text-align: center;
-  color: #ffd700;
+  height: 100%;
 }
 
 .qr-list {
   flex: 1;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 0.5vh;
-  justify-content: space-around;
+  gap: 15px;
 }
 
-.qr-list div {
+.qr-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 0.3vh;
+}
+
+.qr-label {
+  color: #ffd600;
+  font-size: 14px;
+  margin-bottom: 8px;
+  word-break: break-word;
 }
 
 .qr-img {
-  width: 6vh;
-  height: 6vh;
-  object-fit: contain;
   max-width: 100%;
-  max-height: 100%;
+  max-height: 120px;
+  object-fit: contain;
 }
 
-.qr-list div div:first-child {
-  font-size: var(--small-font-size);
-  font-weight: bold;
-  color: #ffd700;
+.qr-fallback {
+  color: #ff6b6b;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 5px;
 }
 
-.qr-list div div:last-child {
-  font-size: calc(var(--small-font-size) * 0.8);
-  color: #cccccc;
-}
-
-/* Row 3: Ayats (10%) */
+/* Row 3: Ayats */
 .ayats {
-  height: var(--ayats-height);
-  background: rgba(26, 26, 26, 0.7);
+  height: 60px;
+  background: rgba(26, 26, 26, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--content-font-size);
+  font-size: 14px;
   text-align: center;
-  padding: var(--padding);
+  padding: 10px;
   border-radius: 8px;
-  overflow: hidden;
+  margin: 10px;
 }
 
-/* Responsive Adjustments for Different Screen Sizes */
-@media (max-width: 1200px) {
-  :root {
-    --header-font-size: 2.5vh;
-    --content-font-size: 1.8vh;
-    --small-font-size: 1.3vh;
-  }
+/* Prayer time item styling */
+.prayer-time-item {
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  color: #ffffff;
+  font-size: 14px;
+  padding: 8px 10px;
+  margin-bottom: 5px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 4px;
+  list-style: none;
+  line-height: 1.4;
 }
 
-@media (max-width: 768px) {
-  :root {
-    --header-font-size: 2vh;
-    --content-font-size: 1.5vh;
-    --small-font-size: 1vh;
-    --gap: 1vh;
-    --padding: 1vh;
+/* TV Emulator Specific Fixes (960x540) */
+@media (min-width: 960px) and (max-width: 1200px) {
+  .header {
+    height: 50px;
+    font-size: 16px;
+    margin: 5px;
   }
   
   .content-row {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
-    gap: 1vh;
+    height: calc(100vh - 120px);
+    gap: 5px;
+    padding: 0 5px;
   }
   
-  .prayer-times, .slideshow, .qr-codes {
-    height: auto;
-    min-height: 15vh;
-  }
-}
-
-/* TV-Specific Optimizations (1920px and above) */
-@media (min-width: 1920px) {
-  :root {
-      /* Maintain percentage-based layout for TV */
-  --header-height: 10vh;
-  --content-height: 70vh;
-  --ayats-height: 10vh;
-    --gap: 2vh;
-    --padding: 2vh;
-    --header-font-size: 3vh;
-    --content-font-size: 2vh;
-    --small-font-size: 1.5vh;
-  }
-  
-  /* Ensure content fits within columns */
-  .prayer-times .prayer-section ul li {
-    font-size: calc(var(--small-font-size) * 1.2);
-    padding: 0.25vh 0.5vh;
-    margin-bottom: 0.12vh;
-    line-height: 1.0;
+  .prayer-times,
+  .slideshow,
+  .qr-codes {
+    padding: 10px;
   }
   
   .prayer-times .prayer-section h2 {
-    font-size: calc(var(--content-font-size) * 1.1);
-    margin-bottom: 0.4vh;
+    font-size: 14px;
+    margin-bottom: 10px;
   }
   
-
-  
-  .qr-img {
-    width: 6vh;
-    height: 6vh;
+  .prayer-times .prayer-section ul li {
+    font-size: 12px;
+    padding: 6px 8px;
+    margin-bottom: 3px;
   }
   
-  .slideshow img {
-    max-width: 100%;
-    max-height: 100%;
+  .qr-label {
+    font-size: 12px;
+  }
+  
+  .ayats {
+    height: 50px;
+    font-size: 12px;
+    margin: 5px;
   }
 }
+
+/* Debug borders removed - clean production styling */

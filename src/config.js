@@ -71,17 +71,20 @@ export function getQrImageUrls() {
     return {
       mapWebsite: '/chromecast_stream/images/qr-codes/mapitt.png',
       communityWhatsApp: '/chromecast_stream/images/qr-codes/whatsapp_group.png',
+      donation: '/chromecast_stream/images/qr-codes/mohid_donation.png',
     };
   }
   return {
     mapWebsite: './images/qr-codes/mapitt.png',
     communityWhatsApp: './images/qr-codes/whatsapp_group.png',
+    donation: './images/qr-codes/mohid_donation.png',
   };
 }
 
 export const qrImageLabels = {
   mapWebsite: 'Website',
   communityWhatsApp: 'WhatsApp',
+  donation: 'Donation',
 };
 
 export const githubConfig = {

@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity() {
     private fun injectTVOptimizations() {
         val css = """
             <style>
-                /* TV-optimized focus indicators */
+                /* TV-optimized focus indicators only - don't override layout */
                 *:focus {
                     outline: 3px solid #4CAF50 !important;
                     outline-offset: 2px !important;
@@ -116,80 +116,10 @@ class MainActivity : AppCompatActivity() {
                     min-width: 48px !important;
                 }
                 
-                /* Optimize text for TV viewing distance */
+                /* Minimal text optimization - don't override layout */
                 body {
                     font-size: 18px !important;
                     line-height: 1.6 !important;
-                }
-                
-                /* Ensure content fits TV screen */
-                .main-layout {
-                    max-width: 100vw !important;
-                    max-height: 100vh !important;
-                    gap: 20px !important;
-                }
-                
-                /* TV-optimized block heights for 16:9 aspect ratio */
-                .header {
-                    min-height: 10vh !important;
-                    max-height: 15vh !important;
-                    font-size: clamp(1.6rem, 3.5vw, 2.2rem) !important;
-                    margin: 2px 2px 0 2px !important;
-                }
-                
-                .content-row {
-                    min-height: 45vh !important;
-                    max-height: 55vh !important;
-                    gap: 25px !important;
-                }
-                
-                .announcements {
-                    min-height: 10vh !important;
-                    max-height: 15vh !important;
-                }
-                
-                /* Better spacing for 16:9 TV viewing */
-                .prayer-times ul li,
-                .announcements ul li {
-                    padding: 12px !important;
-                    margin-bottom: 8px !important;
-                    font-size: 1rem !important;
-                }
-                
-                /* Optimize QR codes for 16:9 TV */
-                .qr-img {
-                    width: 110px !important;
-                    height: 110px !important;
-                }
-                
-                .qr-list div div:first-child {
-                    font-size: 1.1rem !important;
-                    margin-bottom: 8px !important;
-                }
-                
-                /* Slideshow optimization for 16:9 TV */
-                .slideshow img {
-                    max-height: 90% !important;
-                    object-fit: contain !important;
-                }
-                
-                /* Announcements text optimization for 16:9 TV */
-                .announcements div div {
-                    font-size: 1rem !important;
-                    line-height: 1.4 !important;
-                    padding: 15px !important;
-                }
-                
-                /* Prayer times optimization for 16:9 TV */
-                .prayer-times h2 {
-                    font-size: 1.3rem !important;
-                    margin-bottom: 8px !important;
-                }
-                
-                .prayer-times ul li {
-                    font-size: 1rem !important;
-                    padding: 12px !important;
-                    line-height: 1.2 !important;
                 }
             </style>
         """.trimIndent()
