@@ -42,22 +42,23 @@ html, body {
   width: 100%;
 }
 
+/* Font loading strategy to prevent text reflow */
+@font-face {
+  font-family: 'system-ui';
+  font-display: swap; /* Prevents layout shifts during font loading */
+  src: local('system-ui');
+}
+
 /* TV-specific CSS reset to prevent layout shifts */
 @media (min-width: 1920px) {
   html, body {
     /* Prevent TV from adjusting viewport after load */
     overflow: hidden !important;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
   }
   
-  /* Ensure no late layout shifts */
-  * {
-    transform: translateZ(0); /* Force hardware acceleration */
-    backface-visibility: hidden; /* Prevent flickering */
+  /* Lock layout during image loading */
+  .slideshow, .prayer-times, .qr-codes {
+    contain: layout style;
   }
 }
 
@@ -105,6 +106,8 @@ html, body {
   grid-auto-rows: 1fr;
   /* TV-specific: Ensure content fits properly */
   overflow: hidden;
+  /* Ensure proper height distribution */
+  height: 100%;
 }
 
 /* Prayer Times Column */
@@ -168,6 +171,8 @@ html, body {
   justify-content: center;
   min-height: 0; /* Allow flex shrinking */
   overflow: hidden;
+  /* Prevent layout shifts during image loading */
+  contain: layout style;
 }
 
 .slideshow img {
@@ -180,6 +185,10 @@ html, body {
   /* Make images fill most of the container height */
   max-height: calc(100% - var(--padding));
   min-height: calc(100% - 2 * var(--padding));
+  /* Prevent layout shifts during loading */
+  contain: layout style;
+  /* Reserve space to prevent layout shifts */
+  aspect-ratio: 16/9;
 }
 
 /* QR Codes Column */
@@ -545,33 +554,68 @@ html, body {
 }
 
 /* === TV-SPECIFIC OPTIMIZATIONS === */
-/* Optimize for TV displays and ultra-wide screens */
+/* Simplified TV optimization - single source of truth */
 
 @media (min-width: 1920px) {
-  /* 4K and ultra-wide TV optimization */
+  /* TV optimization - unified approach */
   :root {
-    --min-height: clamp(30vh, 40vh, 50vh); /* Increased to compensate for reduced header/announcements heights */
-    --header-height: clamp(9vh, 10.8vh, 13.5vh); /* Reduced by 10% from 10vh-15vh to 9vh-13.5vh */
-    --announcements-height: clamp(9vh, 10.8vh, 13.5vh); /* Reduced by 10% from 10vh-15vh to 9vh-13.5vh */
+    --header-height: 10vh; /* Fixed 10% of viewport height */
+    --announcements-height: 10vh; /* Fixed 10% of viewport height */
+    --content-height: 70vh; /* Fixed 70% of viewport height */
+    --column-gap: 30px; /* Fixed 30px gap */
+    --row-gap: 4px; /* Fixed 4px gap between rows */
+    --padding: 20px; /* Fixed 20px padding */
+    --base-font-size: 22px; /* Fixed 22px font size */
+    --header-font-size: 2rem; /* Fixed 2rem header font */
   }
   
   .content-row {
-    gap: clamp(20px, 3vw, 50px);
+    height: var(--content-height); /* Fixed height */
+    gap: var(--column-gap);
   }
   
-  .prayer-times ul li,
-  .announcements ul li {
-    padding: clamp(15px, 2.5vw, 25px);
-    font-size: clamp(1rem, 2vw, 1.5rem);
+  /* Center the second row with uniform spacing */
+  .main-layout {
+    gap: var(--row-gap); /* Use CSS variable for consistency */
+    justify-content: center;
+    align-items: stretch;
+    padding: 12px 0; /* Fixed padding */
   }
-}
-
-@media (min-width: 3840px) {
-  /* 8K TV optimization */
-  :root {
-    --min-height: clamp(25vh, 35vh, 45vh); /* Increased to compensate for reduced header/announcements heights */
-    --header-height: clamp(7.2vh, 9vh, 10.8vh); /* Reduced by 10% from 8vh-12vh to 7.2vh-10.8vh */
-    --announcements-height: clamp(7.2vh, 9vh, 10.8vh); /* Reduced by 10% from 8vh-12vh to 7.2vh-10.8vh */
+  
+  /* Ensure content elements fit properly within their containers */
+  .prayer-times, .slideshow, .qr-codes {
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  /* Prayer times - compact sizing for TV */
+  .prayer-times h2 {
+    font-size: 1.2rem;
+    margin-bottom: 6px;
+  }
+  
+  .prayer-times ul li {
+    font-size: 0.9rem;
+    padding: 4px 8px;
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+  
+  /* QR codes - compact sizing for TV */
+  .qr-img {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .qr-list div div:first-child {
+    font-size: 0.8rem;
+    margin-bottom: 3px;
+  }
+  
+  /* Slideshow - ensure proper sizing */
+  .slideshow img {
+    max-height: calc(100% - 40px);
+    object-fit: contain;
   }
 }
 
@@ -582,79 +626,7 @@ html, body {
   }
 }
 
-/* TV-specific optimizations for 16:9 aspect ratio */
-@media (min-width: 1920px) and (max-aspect-ratio: 16/9) {
-  /* 16:9 TV optimization - Fixed percentage heights */
-  :root {
-    --header-height: 10vh; /* Fixed 10% of viewport height */
-    --announcements-height: 10vh; /* Fixed 10% of viewport height */
-    --content-height: 70vh; /* Fixed 70% of viewport height for slideshow */
-    --column-gap: 30px; /* Fixed 30px gap */
-    --row-gap: 4px; /* Fixed 4px gap between rows */
-    --padding: 20px; /* Fixed 20px padding */
-    --base-font-size: 22px; /* Fixed 22px font size */
-    --header-font-size: 2rem; /* Fixed 2rem header font */
-  }
-  
-  /* Optimize content row for 16:9 */
-  .content-row {
-    height: var(--content-height); /* Fixed height */
-    gap: var(--column-gap);
-  }
-  
-  /* Center the second row with reduced gaps and margin boundaries on TV */
-  .main-layout {
-    gap: clamp(4px, 0.6vw, 8px); /* Reduced gaps between rows */
-    justify-content: center; /* Center the content vertically */
-    align-items: stretch; /* Stretch rows to fill available space */
-    padding: clamp(12px, 1.5vw, 20px) 0; /* Add margin boundaries for top/bottom rows */
-  }
-  
-  /* Better prayer times layout for TV - More compact */
-  .prayer-times h2 {
-    font-size: clamp(1rem, 2.2vw, 1.5rem);
-    margin-bottom: 4px;
-  }
-  
-  .prayer-times ul li {
-    font-size: clamp(0.8rem, 1.4vw, 1rem);
-    padding: clamp(4px, 0.8vw, 8px);
-    line-height: 1.1;
-    margin-bottom: 2px;
-  }
-  
-  /* Header optimization for TV */
-  .header {
-    margin: clamp(1px, 0.2vw, 4px) clamp(1px, 0.2vw, 4px) 0 clamp(1px, 0.2vw, 4px);
-    color: #ffffff; /* Ensure white color on TV displays */
-    font-size: clamp(0.9rem, 2.2vw, 1.6rem);
-  }
-  
-  /* Optimize slideshow for TV */
-  .slideshow img {
-    max-height: calc(100% - var(--padding));
-    min-height: calc(100% - 2 * var(--padding));
-    object-fit: contain;
-  }
-  
-  /* Better QR code sizing for TV - More compact */
-  .qr-img {
-    width: clamp(50px, 8vw, 80px); /* More compact for TV displays */
-    height: clamp(50px, 8vw, 80px); /* More compact for TV displays */
-  }
-  
-  .qr-list div div:first-child {
-    font-size: clamp(0.9rem, 1.3vw, 1.1rem);
-    margin-bottom: 4px;
-  }
-  
-  /* Announcements optimization for TV */
-  .announcements div div {
-    font-size: clamp(1rem, 1.6vw, 1.3rem);
-    line-height: 1.4;
-    padding: clamp(12px, 1.8vw, 20px);
-  }
-}
+/* TV-specific optimizations removed - using unified approach above */
 
 /* Ultra-wide TV optimization (beyond 16:9) - Fixed percentage heights */
 @media (min-width: 1920px) and (min-aspect-ratio: 16/9) {
