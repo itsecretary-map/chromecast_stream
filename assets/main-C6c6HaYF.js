@@ -1,10 +1,9 @@
 // main.js - Chromecast Receiver Demo
-// Rotates through images from GitHub repository and displays announcements
+// Rotates through images from GitHub repository and displays prayer times and QR codes
 
 import { 
   slideshowImgUrls, 
   getImagePath, 
-  ayatHadithList, 
   getQrImageUrls,
   qrImageLabels, 
   githubConfig 
@@ -329,21 +328,21 @@ function optimizeForTV() {
     console.log(`TV detected: ${window.innerWidth}x${window.innerHeight}, aspect ratio: ${aspectRatio.toFixed(2)}`);
     
     if (aspectRatio <= 16/9) {
-      // 16:9 or narrower - optimize for standard TV (fixed percentage heights)
+      // 16:9 or narrower - optimize for standard TV (percentage-based layout)
       document.documentElement.style.setProperty('--header-height', '10vh');
-      document.documentElement.style.setProperty('--announcements-height', '10vh');
+      document.documentElement.style.setProperty('--footer-height', '10vh');
       document.documentElement.style.setProperty('--content-height', '70vh');
-      document.documentElement.style.setProperty('--column-gap', '30px');
-      document.documentElement.style.setProperty('--row-gap', '4px');
-      console.log('Applied 16:9 TV optimization (fixed percentages)');
+      document.documentElement.style.setProperty('--gap', '2vh');
+      document.documentElement.style.setProperty('--padding', '2vh');
+      console.log('Applied 16:9 TV optimization (percentage-based layout)');
     } else {
-      // Ultra-wide - optimize for wide displays (fixed percentage heights)
+      // Ultra-wide - optimize for wide displays (percentage-based layout)
       document.documentElement.style.setProperty('--header-height', '8vh');
-      document.documentElement.style.setProperty('--announcements-height', '8vh');
+      document.documentElement.style.setProperty('--footer-height', '8vh');
       document.documentElement.style.setProperty('--content-height', '74vh');
-      document.documentElement.style.setProperty('--column-gap', '35px');
-      document.documentElement.style.setProperty('--row-gap', '3px');
-      console.log('Applied ultra-wide TV optimization (fixed percentages)');
+      document.documentElement.style.setProperty('--gap', '2vh');
+      document.documentElement.style.setProperty('--padding', '2vh');
+      console.log('Applied ultra-wide TV optimization (percentage-based layout)');
     }
   }
 }
@@ -496,23 +495,8 @@ function getFallbackImages() {
   ];
 }
 
-// === Rotating Ayat/Hadith Logic ===
-const annList = document.getElementById('announcements-list');
-let ayatIdx = 0;
-function showAyat(idx) {
-  annList.innerHTML = '';
-  // Use a div instead of <li> to avoid bullet
-  const wrapper = document.createElement('div');
-  // Only show English version with smaller font and proper positioning
-  const en = ayatHadithList[idx].en.replace(/[.]+(?=\s*\()/, '');
-  wrapper.innerHTML = `<div style="font-size:1rem;text-align:center;color:white;line-height:1.4;padding:15px;background:rgba(255,255,255,0.1);border-radius:8px;border-left:4px solid #2196F3;">${en}</div>`;
-  annList.appendChild(wrapper);
-}
-showAyat(ayatIdx);
-setInterval(() => {
-  ayatIdx = (ayatIdx + 1) % ayatHadithList.length;
-  showAyat(ayatIdx);
-}, 20000); // 20 seconds
+// === Footer Content ===
+// Footer content is now static HTML - no JavaScript needed
 
 // === Prayer Times Logic ===
 // Fetch prayer times for zipcode 15044 (Gibsonia, PA) but do not display the location
