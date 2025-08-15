@@ -10,6 +10,15 @@
     
     <!-- Wake lock permission for keeping screen on during streaming -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    
+    <!-- Keep screen on permission -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    
+    <!-- Prevent device from sleeping -->
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    
+    <!-- Keep CPU awake -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
     <!-- TV-specific features -->
     <uses-feature

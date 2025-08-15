@@ -1,7 +1,10 @@
 package com.map.chromecaststream
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
+import android.os.PowerManager
+import android.view.WindowManager
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.webkit.WebSettings
@@ -20,12 +23,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var webView: WebView
     private lateinit var webViewContainer: FrameLayout
     
+    // Wake lock for preventing sleep mode
+    private var wakeLock: PowerManager.WakeLock? = null
+    
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
         // Set up TV-optimized window
         setupTVWindow()
+        
+        // Acquire wake lock to prevent sleep mode
+        acquireWakeLock()
         
         setContentView(R.layout.activity_main)
         
@@ -157,5 +166,76 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onKeyDown(keyCode, event)
+    }
+    
+    // === SLEEP MODE PREVENTION ===
+    
+    /**
+     * Acquire wake lock to prevent device from sleeping
+     */
+    private fun acquireWakeLock() {
+        try {
+            val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+            wakeLock = powerManager.newWakeLock(
+                PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.ON_AFTER_RELEASE,
+                "MAPChromecastStream::WakeLock"
+            )
+            
+            // Keep screen on and bright
+            wakeLock?.acquire()
+            
+            // Also set window flags to keep screen on
+            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD)
+            window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
+            window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
+            
+            println("✅ Wake lock acquired - device will stay awake")
+        } catch (e: Exception) {
+            println("⚠️ Failed to acquire wake lock: ${e.message}")
+        }
+    }
+    
+    /**
+     * Release wake lock when app is destroyed
+     */
+    private fun releaseWakeLock() {
+        try {
+            wakeLock?.let { lock ->
+                if (lock.isHeld) {
+                    lock.release()
+                    println("🔓 Wake lock released")
+                }
+            }
+            wakeLock = null
+            
+            // Remove window flags
+            window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            window.clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD)
+            window.clearFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
+        } catch (e: Exception) {
+            println("⚠️ Error releasing wake lock: ${e.message}")
+        }
+    }
+    
+    override fun onDestroy() {
+        super.onDestroy()
+        // Release wake lock when app is destroyed
+        releaseWakeLock()
+    }
+    
+    override fun onPause() {
+        super.onPause()
+        // Keep wake lock active even when app is paused
+        // This ensures the slideshow continues running
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        // Ensure wake lock is still active when resuming
+        if (wakeLock?.isHeld == false) {
+            acquireWakeLock()
+        }
     }
 }
