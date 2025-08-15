@@ -4,6 +4,7 @@
 import { 
   slideshowImgUrls, 
   getImagePath, 
+  ayatHadithList,
   getQrImageUrls,
   qrImageLabels, 
   githubConfig 
@@ -330,7 +331,7 @@ function optimizeForTV() {
     if (aspectRatio <= 16/9) {
       // 16:9 or narrower - optimize for standard TV (percentage-based layout)
       document.documentElement.style.setProperty('--header-height', '10vh');
-      document.documentElement.style.setProperty('--footer-height', '10vh');
+      document.documentElement.style.setProperty('--ayats-height', '10vh');
       document.documentElement.style.setProperty('--content-height', '70vh');
       document.documentElement.style.setProperty('--gap', '2vh');
       document.documentElement.style.setProperty('--padding', '2vh');
@@ -338,7 +339,7 @@ function optimizeForTV() {
     } else {
       // Ultra-wide - optimize for wide displays (percentage-based layout)
       document.documentElement.style.setProperty('--header-height', '8vh');
-      document.documentElement.style.setProperty('--footer-height', '8vh');
+      document.documentElement.style.setProperty('--ayats-height', '8vh');
       document.documentElement.style.setProperty('--content-height', '74vh');
       document.documentElement.style.setProperty('--gap', '2vh');
       document.documentElement.style.setProperty('--padding', '2vh');
@@ -495,8 +496,48 @@ function getFallbackImages() {
   ];
 }
 
-// === Footer Content ===
-// Footer content is now static HTML - no JavaScript needed
+// === Announcements Content ===
+function renderAnnouncements() {
+  const announcementsList = document.getElementById('announcements-list');
+  if (announcementsList) {
+    const announcements = [
+      '📅 Sunday School: 10:00 AM',
+      '🕌 Imam Consultation Available',
+      '📚 Islamic Classes for All Ages'
+    ];
+    
+    announcementsList.innerHTML = '';
+    announcements.forEach(announcement => {
+      const li = document.createElement('li');
+      li.textContent = announcement;
+      announcementsList.appendChild(li);
+    });
+  }
+}
+
+// === Rotating Ayats/Hadith Logic ===
+const ayatsContent = document.getElementById('ayats-content');
+let ayatIdx = 0;
+
+function showAyat(idx) {
+  if (ayatsContent) {
+    const ayat = ayatHadithList[idx];
+    const en = ayat.en.replace(/[.]+(?=\s*\()/, '');
+    ayatsContent.innerHTML = `<div style="font-size:1rem;text-align:center;color:white;line-height:1.4;padding:15px;background:rgba(255,255,255,0.1);border-radius:8px;border-left:4px solid #2196F3;">${en}</div>`;
+  }
+}
+
+// Initialize ayats rotation
+if (ayatsContent) {
+  showAyat(ayatIdx);
+  setInterval(() => {
+    ayatIdx = (ayatIdx + 1) % ayatHadithList.length;
+    showAyat(ayatIdx);
+  }, 20000); // 20 seconds
+}
+
+// Initialize announcements
+renderAnnouncements();
 
 // === Prayer Times Logic ===
 // Fetch prayer times for zipcode 15044 (Gibsonia, PA) but do not display the location

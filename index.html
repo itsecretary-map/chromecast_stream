@@ -7,7 +7,7 @@
     <meta http-equiv="Expires" content="86400" />
     
     <!-- Preload critical assets to prevent layout shifts -->
-    <link rel="preload" href="/chromecast_stream/assets/main-C6c6HaYF.js" as="script" />
+    <link rel="preload" href="/chromecast_stream/assets/main-iUX3Tg-u.js" as="script" />
     <link rel="preload" href="/chromecast_stream/assets/CCA_5344-HDR-3nh0mzaB.jpg" as="image" />
     
     <!-- Preload QR code images -->
@@ -56,8 +56,8 @@
     .disconnected { color: #f44336; }
   </style>
 
-  <script type="module" crossorigin src="/chromecast_stream/assets/index-bTwDxDZG.js"></script>
-  <link rel="stylesheet" crossorigin href="/chromecast_stream/assets/index-DK2L5DaU.css">
+  <script type="module" crossorigin src="/chromecast_stream/assets/index-ZUUIkVXk.js"></script>
+  <link rel="stylesheet" crossorigin href="/chromecast_stream/assets/index-MbwbaFlS.css">
 </head>
 <body>
   <!-- Chromecast Controls - Only visible when used as sender -->
@@ -80,10 +80,21 @@
     <!-- Row 2: Three Columns -->
     <div class="content-row">
       <div class="prayer-times">
-        <h2>Prayer Times</h2>
-        <ul id="prayer-times-list">
-          <!-- Populated by JS -->
-        </ul>
+        <!-- Prayer Times Section (60%) -->
+        <div class="prayer-section">
+          <h2>Prayer Times</h2>
+          <ul id="prayer-times-list">
+            <!-- Populated by JS -->
+          </ul>
+        </div>
+        
+        <!-- Announcements Section (40%) -->
+        <div class="announcements-section">
+          <h3>Announcements</h3>
+          <ul id="announcements-list">
+            <!-- Populated by JS -->
+          </ul>
+        </div>
       </div>
       
       <div class="slideshow">
@@ -95,9 +106,9 @@
       </div>
     </div>
     
-    <!-- Row 3: Footer -->
-    <div class="footer">
-      <div>📅 Sunday School: 10:00 AM | 🕌 Imam Consultation Available | 📚 Islamic Classes for All Ages</div>
+    <!-- Row 3: Ayats -->
+    <div class="ayats">
+      <div id="ayats-content">Loading ayats...</div>
     </div>
   </div>
 
