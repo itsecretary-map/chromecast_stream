@@ -501,7 +501,6 @@ function renderAnnouncements() {
   const announcementsList = document.getElementById('announcements-list');
   if (announcementsList) {
     const announcements = [
-      '📅 Sunday School: 10:00 AM',
       '🕌 Imam Consultation Available',
       '📚 Islamic Classes for All Ages'
     ];
