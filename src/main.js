@@ -364,6 +364,88 @@ function refreshLocalCache() {
   }
 }
 
+// === SLEEP MODE PREVENTION ===
+let wakeLock = null;
+let keepAliveInterval = null;
+
+// Function to request wake lock (prevents sleep mode)
+async function requestWakeLock() {
+  try {
+    if ('wakeLock' in navigator) {
+      wakeLock = await navigator.wakeLock.request('screen');
+      console.log('✅ Wake lock acquired - screen will stay awake');
+      
+      wakeLock.addEventListener('release', () => {
+        console.log('⚠️ Wake lock was released');
+        // Try to re-acquire wake lock
+        setTimeout(requestWakeLock, 1000);
+      });
+    } else {
+      console.log('⚠️ Wake lock API not supported, using alternative methods');
+      // Fallback: use keep-alive techniques
+      startKeepAlive();
+    }
+  } catch (err) {
+    console.log('⚠️ Wake lock failed:', err);
+    // Fallback: use keep-alive techniques
+    startKeepAlive();
+  }
+}
+
+// Fallback method to prevent sleep mode
+function startKeepAlive() {
+  console.log('🔄 Starting keep-alive fallback methods');
+  
+  // Method 1: Periodic user activity simulation
+  keepAliveInterval = setInterval(() => {
+    // Simulate user activity to prevent sleep
+    const event = new Event('mousemove');
+    document.dispatchEvent(event);
+    
+    // Also update some visual elements to keep the system active
+    const header = document.querySelector('.header');
+    if (header) {
+      header.style.transform = 'translateZ(0)'; // Force GPU rendering
+    }
+  }, 30000); // Every 30 seconds
+  
+  // Method 2: Request fullscreen if possible
+  if (document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen().catch(() => {
+      console.log('Fullscreen request denied');
+    });
+  }
+  
+  // Method 3: Keep audio context alive (if using audio)
+  if (typeof AudioContext !== 'undefined') {
+    const audioContext = new AudioContext();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    gainNode.gain.value = 0; // Silent
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + 0.001);
+  }
+}
+
+// Function to release wake lock
+function releaseWakeLock() {
+  if (wakeLock) {
+    wakeLock.release();
+    wakeLock = null;
+    console.log('🔓 Wake lock released');
+  }
+  
+  if (keepAliveInterval) {
+    clearInterval(keepAliveInterval);
+    keepAliveInterval = null;
+    console.log('🔓 Keep-alive interval cleared');
+  }
+}
+
 // === CHROMECAST RECEIVER OPTIMIZATION ===
 function detectAndOptimizeForChromecast() {
   // Check if this is likely running as a Chromecast receiver
@@ -447,6 +529,44 @@ function optimizeForTV() {
 // Call TV optimization on load and resize
 window.addEventListener('load', optimizeForTV);
 window.addEventListener('resize', optimizeForTV);
+
+// Handle visibility changes to maintain wake lock
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    console.log('⚠️ Page became hidden, trying to maintain wake lock');
+    // Try to re-acquire wake lock when page becomes visible again
+    setTimeout(() => {
+      if (!document.hidden) {
+        requestWakeLock();
+      }
+    }, 1000);
+  } else {
+    console.log('✅ Page became visible, ensuring wake lock is active');
+    requestWakeLock();
+  }
+});
+
+// Handle page focus/blur events
+window.addEventListener('focus', () => {
+  console.log('✅ Window focused, ensuring wake lock is active');
+  requestWakeLock();
+});
+
+window.addEventListener('blur', () => {
+  console.log('⚠️ Window blurred, but maintaining wake lock');
+});
+
+// Cleanup wake lock when page is unloaded
+window.addEventListener('beforeunload', () => {
+  console.log('🔓 Page unloading, releasing wake lock');
+  releaseWakeLock();
+});
+
+// Handle page unload
+window.addEventListener('unload', () => {
+  console.log('🔓 Page unloaded, releasing wake lock');
+  releaseWakeLock();
+});
 
 // === Slideshow Logic ===
 let currentIdx = 0;
@@ -544,6 +664,9 @@ async function refreshImagesAfterRotation() {
 
 // Initialize slideshow with smart local caching
 async function initializeSlideshow() {
+  // Request wake lock to prevent sleep mode
+  await requestWakeLock();
+  
   try {
     console.log('Initializing slideshow with smart local caching...');
     
