@@ -493,6 +493,11 @@ function getFallbackImages() {
   return [
     getImagePath('imam_schedule.jpg'),
     getImagePath('sundayschool.jpg'),
+    getImagePath('fall retreat.jpg'),
+    getImagePath('hajj dinner.jpg'),
+    getImagePath('membership drive.jpg'),
+    getImagePath('ping pong.jpg'),
+    getImagePath('winter fundraiser.jpg')
   ];
 }
 

@@ -7,9 +7,11 @@ export const slideshowImgUrls = [
   // Fallback images - these will be used if GitHub integration fails
   './images/slideshow/imam_schedule.jpg',
   './images/slideshow/sundayschool.jpg',
-  'https://via.placeholder.com/800x600/4CAF50/FFFFFF?text=MAP+Community',
-  'https://via.placeholder.com/800x600/2196F3/FFFFFF?text=Welcome+to+MAP',
-  'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=Prayer+Times'
+  './images/slideshow/fall retreat.jpg',
+  './images/slideshow/hajj dinner.jpg',
+  './images/slideshow/membership drive.jpg',
+  './images/slideshow/ping pong.jpg',
+  './images/slideshow/winter fundraiser.jpg'
 ];
 
 // Function to get GitHub Pages compatible image paths
