@@ -597,7 +597,7 @@ async function initializeSlideshow() {
   }
 }
 
-setInterval(nextImage, 10000); // 10 seconds
+setInterval(nextImage, 5000); // 5 seconds
 
 // Function to get fallback images with correct paths for current environment
 function getFallbackImages() {
