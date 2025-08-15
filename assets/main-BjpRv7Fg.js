@@ -718,6 +718,85 @@ function renderQrCodes() {
 // Initialize everything when the page loads
 console.log('🚀 Initializing Chromecast Receiver Demo...');
 
+// DEBUG: Add debug button functionality
+document.addEventListener('DOMContentLoaded', () => {
+  const debugBtn = document.getElementById('debugBtn');
+  if (debugBtn) {
+    debugBtn.addEventListener('click', () => {
+      console.log('🔍 DEBUG BUTTON CLICKED');
+      
+      // Force apply debug styles
+      document.body.style.border = '10px solid yellow';
+      
+      // Check current CSS variables
+      const root = document.documentElement;
+      const computedStyle = getComputedStyle(root);
+      console.log('🎨 Current CSS Variables:', {
+        headerHeight: computedStyle.getPropertyValue('--header-height'),
+        contentHeight: computedStyle.getPropertyValue('--content-height'),
+        ayatsHeight: computedStyle.getPropertyValue('--ayats-height')
+      });
+      
+      // Check media query match
+      const mediaQuery = window.matchMedia('(min-width: 1920px)');
+      console.log('📺 Media Query (min-width: 1920px):', mediaQuery.matches);
+      
+      // Check viewport
+      console.log('📱 Viewport:', {
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    });
+  }
+});
+
+// DEBUG: Log screen dimensions and CSS variables
+console.log('📱 Screen Dimensions:', {
+  width: window.innerWidth,
+  height: window.innerHeight,
+  screenWidth: screen.width,
+  screenHeight: screen.height,
+  devicePixelRatio: window.devicePixelRatio
+});
+
+// DEBUG: Check if CSS variables are being applied
+setTimeout(() => {
+  const root = document.documentElement;
+  const computedStyle = getComputedStyle(root);
+  console.log('🎨 CSS Variables Applied:', {
+    headerHeight: computedStyle.getPropertyValue('--header-height'),
+    contentHeight: computedStyle.getPropertyValue('--content-height'),
+    ayatsHeight: computedStyle.getPropertyValue('--ayats-height'),
+    gap: computedStyle.getPropertyValue('--gap'),
+    padding: computedStyle.getPropertyValue('--padding')
+  });
+  
+  // DEBUG: Check actual element dimensions
+  const prayerTimes = document.querySelector('.prayer-times');
+  const qrCodes = document.querySelector('.qr-codes');
+  const slideshow = document.querySelector('.slideshow');
+  
+  if (prayerTimes) {
+    const rect = prayerTimes.getBoundingClientRect();
+    console.log('📏 Prayer Times Element:', {
+      width: rect.width,
+      height: rect.height,
+      top: rect.top,
+      left: rect.left
+    });
+  }
+  
+  if (qrCodes) {
+    const rect = qrCodes.getBoundingClientRect();
+    console.log('📏 QR Codes Element:', {
+      width: rect.width,
+      height: rect.height,
+      top: rect.top,
+      left: rect.left
+    });
+  }
+}, 1000);
+
 // Ensure DOM is fully loaded before setting background
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
