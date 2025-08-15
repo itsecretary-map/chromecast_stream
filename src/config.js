@@ -51,7 +51,7 @@ export const ayatHadithList = [
 ];
 
 // QR Code Images and Labels
-// Using GitHub Pages compatible paths - only two QR codes to reduce row height
+// Using GitHub Pages compatible paths - three QR codes including donation
 export function getQrImageUrls() {
   // More robust GitHub Pages detection
   const isGitHubPages = typeof window !== 'undefined' && (
@@ -71,17 +71,20 @@ export function getQrImageUrls() {
     return {
       mapWebsite: '/chromecast_stream/images/qr-codes/mapitt.png',
       communityWhatsApp: '/chromecast_stream/images/qr-codes/whatsapp_group.png',
+      donation: '/chromecast_stream/images/qr-codes/mohid_donation.png',
     };
   }
   return {
     mapWebsite: './images/qr-codes/mapitt.png',
     communityWhatsApp: './images/qr-codes/whatsapp_group.png',
+    donation: './images/qr-codes/mohid_donation.png',
   };
 }
 
 export const qrImageLabels = {
-  mapWebsite: 'MAP Website',
+  mapWebsite: 'Website',
   communityWhatsApp: 'WhatsApp',
+  donation: 'Donation',
 };
 
 export const githubConfig = {

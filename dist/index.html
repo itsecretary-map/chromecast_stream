@@ -6,15 +6,23 @@
     <meta http-equiv="Cache-Control" content="public, max-age=86400" />
     <meta http-equiv="Expires" content="86400" />
     
-    <!-- Preload critical assets to prevent layout shifts -->
-    <link rel="preload" href="/chromecast_stream/assets/main-CwbVHtHs.js" as="script" />
-    <link rel="preload" href="/chromecast_stream/assets/CCA_5344-HDR-3nh0mzaB.jpg" as="image" />
-    
-    <!-- Preload QR code images -->
-    <link rel="preload" href="/chromecast_stream/assets/mapitt-D95Yfv1h.png" as="image" />
-    <link rel="preload" href="/chromecast_stream/assets/mohid_donation-CebzGV9v.png" as="image" />
-    <link rel="preload" href="/chromecast_stream/assets/whatsapp_group-Dr1o0M4t.png" as="image" />
-  <title>Chromecast Slideshow Receiver</title>
+            <!-- Preload critical assets to prevent layout shifts -->
+        <link rel="preload" href="/chromecast_stream/assets/main-D9bGlgQN.js" as="script" />
+        <link rel="preload" href="/chromecast_stream/assets/CCA_5344-HDR-3nh0mzaB.jpg" as="image" type="image/jpeg" fetchpriority="high" />
+        
+        <!-- Preload QR code images -->
+        <link rel="preload" href="/chromecast_stream/assets/mapitt-D95Yfv1h.png" as="image" />
+        <link rel="preload" href="/chromecast_stream/assets/mohid_donation-CebzGV9v.png" as="image" />
+        <link rel="preload" href="/chromecast_stream/assets/whatsapp_group-Dr1o0M4t.png" as="image" />
+        
+        <!-- Font optimization to prevent layout shifts -->
+        <style>
+          /* Font loading optimization for system fonts */
+          body {
+            font-display: swap;
+          }
+        </style>
+  <title>MAP Chromecast Viewer</title>
   <style>
     /* Chromecast sender controls - for when this page is used as a sender */
     .chromecast-controls {
@@ -56,12 +64,12 @@
     .disconnected { color: #f44336; }
   </style>
 
-  <script type="module" crossorigin src="/chromecast_stream/assets/index-B7cd18C_.js"></script>
-  <link rel="stylesheet" crossorigin href="/chromecast_stream/assets/index-VMdZjFmP.css">
+  <script type="module" crossorigin src="/chromecast_stream/assets/index-CAzLNaQl.js"></script>
+  <link rel="stylesheet" crossorigin href="/chromecast_stream/assets/index-BwNs9Pl8.css">
 </head>
 <body>
   <!-- Chromecast Controls - Only visible when used as sender -->
-  <div class="chromecast-controls">
+  <!-- <div class="chromecast-controls">
     <button id="castButton" class="cast-button" onclick="initializeCast()">
       📺 Cast to Chromecast
     </button>
@@ -71,7 +79,7 @@
     <div id="castStatus" class="cast-status disconnected">
       Ready to cast
     </div>
-  </div>
+  </div> -->
 
   <div class="main-layout">
     <!-- Row 1: Welcome Message -->
@@ -80,10 +88,21 @@
     <!-- Row 2: Three Columns -->
     <div class="content-row">
       <div class="prayer-times">
-        <h2>Prayer Times</h2>
-        <ul id="prayer-times-list">
-          <!-- Populated by JS -->
-        </ul>
+        <!-- Prayer Times Section (60%) -->
+        <div class="prayer-section">
+          <h2>Prayer Times</h2>
+          <ul id="prayer-times-list">
+            <!-- Populated by JS -->
+          </ul>
+        </div>
+        
+        <!-- Announcements Section (40%) -->
+        <div class="announcements-section">
+          <h3>Announcements</h3>
+          <ul id="announcements-list">
+            <!-- Populated by JS -->
+          </ul>
+        </div>
       </div>
       
       <div class="slideshow">
@@ -95,16 +114,19 @@
       </div>
     </div>
     
-    <!-- Row 3: Ayat -->
-    <div class="announcements">
-      <ul id="announcements-list"></ul>
+    <!-- Row 3: Ayats -->
+    <div class="ayats">
+      <div id="ayats-content">Loading ayats...</div>
     </div>
   </div>
 
-  <!-- Chromecast API -->
+  <!-- Chromecast API - Commented out since loading via app -->
+  <!--
   <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+  -->
+  <!--
   <script>
-    // Chromecast functionality
+    // Chromecast functionality - Commented out since loading via app
     let castSender;
     
     function initializeCast() {
@@ -246,5 +268,6 @@
       }
     }
   </script>
+  -->
 </body>
 </html>
