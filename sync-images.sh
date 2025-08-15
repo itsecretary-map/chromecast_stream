@@ -14,16 +14,16 @@ SUBDIRS=$(find images/ -type d 2>/dev/null | sort)
 # Check for changes in main images directory and all subdirectories
 CHANGES_DETECTED=false
 
-# Check main images directory
-if ! git diff --quiet images/; then
+# Check main images directory for both modified and untracked files
+if ! git diff --quiet images/ || [ -n "$(git ls-files --others --exclude-standard images/)" ]; then
     echo "📸 Changes detected in images/ directory"
     CHANGES_DETECTED=true
 fi
 
-# Check each subdirectory
+# Check each subdirectory for both modified and untracked files
 for subdir in $SUBDIRS; do
     if [ "$subdir" != "images/" ]; then  # Skip the root images directory (already checked)
-        if ! git diff --quiet "$subdir"; then
+        if ! git diff --quiet "$subdir" || [ -n "$(git ls-files --others --exclude-standard "$subdir")" ]; then
             echo "📸 Changes detected in $subdir"
             CHANGES_DETECTED=true
         fi
