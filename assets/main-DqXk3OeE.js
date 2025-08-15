@@ -734,8 +734,37 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('🎨 Current CSS Variables:', {
         headerHeight: computedStyle.getPropertyValue('--header-height'),
         contentHeight: computedStyle.getPropertyValue('--content-height'),
-        ayatsHeight: computedStyle.getPropertyValue('--ayats-height')
+        ayatsHeight: computedStyle.getPropertyValue('--ayats-height'),
+        gap: computedStyle.getPropertyValue('--gap'),
+        padding: computedStyle.getPropertyValue('--padding')
       });
+      
+      // Check actual computed styles of elements
+      const prayerTimes = document.querySelector('.prayer-times');
+      const qrCodes = document.querySelector('.qr-codes');
+      const slideshow = document.querySelector('.slideshow');
+      
+      if (prayerTimes) {
+        const style = window.getComputedStyle(prayerTimes);
+        console.log('📏 Prayer Times Computed Styles:', {
+          height: style.height,
+          maxHeight: style.maxHeight,
+          overflow: style.overflow,
+          padding: style.padding,
+          margin: style.margin
+        });
+      }
+      
+      if (qrCodes) {
+        const style = window.getComputedStyle(qrCodes);
+        console.log('📏 QR Codes Computed Styles:', {
+          height: style.height,
+          maxHeight: style.maxHeight,
+          overflow: style.overflow,
+          padding: style.padding,
+          margin: style.margin
+        });
+      }
       
       // Check media query match
       const mediaQuery1920 = window.matchMedia('(min-width: 1920px)');
