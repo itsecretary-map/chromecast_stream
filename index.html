@@ -14,6 +14,23 @@
         <link rel="preload" href="/chromecast_stream/assets/mapitt-D95Yfv1h.png" as="image" />
         <link rel="preload" href="/chromecast_stream/assets/mohid_donation-CebzGV9v.png" as="image" />
         <link rel="preload" href="/chromecast_stream/assets/whatsapp_group-Dr1o0M4t.png" as="image" />
+        
+        <!-- Font optimization to prevent layout shifts -->
+        <style>
+          /* Font loading optimization */
+          @font-face {
+            font-family: 'Arial';
+            font-display: swap;
+          }
+          @font-face {
+            font-family: 'Helvetica Neue';
+            font-display: swap;
+          }
+          @font-face {
+            font-family: 'Helvetica';
+            font-display: swap;
+          }
+        </style>
   <title>MAP Chromecast Viewer</title>
   <style>
     /* Chromecast sender controls - for when this page is used as a sender */
@@ -56,8 +73,8 @@
     .disconnected { color: #f44336; }
   </style>
 
-  <script type="module" crossorigin src="/chromecast_stream/assets/index-C30s5fQG.js"></script>
-  <link rel="stylesheet" crossorigin href="/chromecast_stream/assets/index-bHvBCA1u.css">
+  <script type="module" crossorigin src="/chromecast_stream/assets/index-DJ7b7Zxn.js"></script>
+  <link rel="stylesheet" crossorigin href="/chromecast_stream/assets/index-ENyGyTfz.css">
 </head>
 <body>
   <!-- Chromecast Controls - Only visible when used as sender -->
