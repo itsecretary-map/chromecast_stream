@@ -671,6 +671,7 @@ function renderQrCodes() {
             switch(key) {
               case 'mapWebsite': return 'mapitt.png';
               case 'communityWhatsApp': return 'whatsapp_group.png';
+              case 'donation': return 'mohid_donation.png';
               default: return 'mapitt.png';
             }
           };
