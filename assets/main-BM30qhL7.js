@@ -496,23 +496,7 @@ function getFallbackImages() {
   ];
 }
 
-// === Announcements Content ===
-function renderAnnouncements() {
-  const announcementsList = document.getElementById('announcements-list');
-  if (announcementsList) {
-    const announcements = [
-      '🕌 Imam Consultation Available',
-      '📚 Islamic Classes for All Ages'
-    ];
-    
-    announcementsList.innerHTML = '';
-    announcements.forEach(announcement => {
-      const li = document.createElement('li');
-      li.textContent = announcement;
-      announcementsList.appendChild(li);
-    });
-  }
-}
+
 
 // === Rotating Ayats/Hadith Logic ===
 const ayatsContent = document.getElementById('ayats-content');
@@ -535,8 +519,7 @@ if (ayatsContent) {
   }, 20000); // 20 seconds
 }
 
-// Initialize announcements
-renderAnnouncements();
+
 
 // === Prayer Times Logic ===
 // Fetch prayer times for zipcode 15044 (Gibsonia, PA) but do not display the location
@@ -644,7 +627,6 @@ function renderQrCodes() {
             switch(key) {
               case 'mapWebsite': return 'mapitt.png';
               case 'communityWhatsApp': return 'whatsapp_group.png';
-              case 'donation': return 'mohid_donation.png';
               default: return 'mapitt.png';
             }
           };
