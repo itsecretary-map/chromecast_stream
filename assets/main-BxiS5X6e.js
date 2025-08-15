@@ -738,8 +738,10 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       
       // Check media query match
-      const mediaQuery = window.matchMedia('(min-width: 1920px)');
-      console.log('📺 Media Query (min-width: 1920px):', mediaQuery.matches);
+      const mediaQuery1920 = window.matchMedia('(min-width: 1920px)');
+      const mediaQuery960 = window.matchMedia('(min-width: 960px) and (max-width: 1200px)');
+      console.log('📺 Media Query (min-width: 1920px):', mediaQuery1920.matches);
+      console.log('📺 Media Query (960px-1200px):', mediaQuery960.matches);
       
       // Check viewport
       console.log('📱 Viewport:', {
