@@ -34,7 +34,6 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:logo="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.MAPChromecastStream"
@@ -89,10 +88,7 @@
             android:name="android.app.icon"
             android:resource="@mipmap/ic_launcher" />
             
-        <!-- TV-specific launcher icon -->
-        <meta-data
-            android:name="android.app.adaptive_icon"
-            android:resource="@mipmap/ic_launcher" />
+
 
     </application>
 
