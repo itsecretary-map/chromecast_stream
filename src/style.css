@@ -15,6 +15,10 @@ html, body {
   color: white;
   font-family: 'Arial', 'Helvetica Neue', 'Helvetica', sans-serif;
   overflow: hidden;
+  /* Optimize for 1080p displays */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* Main Layout Container */
@@ -35,7 +39,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 22px;
   font-weight: bold;
   text-align: center;
   padding: 10px;
@@ -192,7 +196,7 @@ html, body {
 @media (min-width: 960px) and (max-width: 1200px) {
   .header {
     height: 50px;
-    font-size: 16px;
+    font-size: 20px;
     margin: 5px;
   }
   
@@ -227,6 +231,61 @@ html, body {
     height: 50px;
     font-size: 12px;
     margin: 5px;
+  }
+}
+
+/* Real 1080p TV Optimizations (1920x1080) */
+@media (min-width: 1920px) {
+  .header {
+    height: 80px;
+    font-size: 28px;
+    margin: 15px;
+    padding: 15px;
+  }
+  
+  .content-row {
+    height: calc(100vh - 200px);
+    gap: 20px;
+    padding: 0 20px;
+  }
+  
+  .prayer-times,
+  .slideshow,
+  .qr-codes {
+    padding: 20px;
+  }
+  
+  .prayer-times .prayer-section h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .prayer-times .prayer-section ul li {
+    font-size: 18px;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+  }
+  
+  .qr-label {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+  
+  .qr-img {
+    max-height: 150px;
+  }
+  
+  .ayats {
+    height: 80px;
+    font-size: 18px;
+    margin: 15px;
+    padding: 15px;
+  }
+  
+  /* Optimize for 1080p viewing distance */
+  body {
+    font-size: 18px;
+    line-height: 1.6;
   }
 }
 
