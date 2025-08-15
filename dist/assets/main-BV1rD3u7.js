@@ -228,9 +228,14 @@ async function fetchGitHubImages() {
   }
 }
 
+// Enhanced local image caching system
+const LOCAL_IMAGE_CACHE_KEY = 'local_images_cache';
+const IMAGE_CACHE_VERSION = '1.0'; // Increment this when image paths change
+
 // Cache management functions
 function clearImageCache() {
   localStorage.removeItem(GITHUB_CACHE_KEY);
+  localStorage.removeItem(LOCAL_IMAGE_CACHE_KEY);
   console.log('🗑️ Image cache cleared');
 }
 
@@ -252,20 +257,111 @@ function getCacheInfo() {
   }
 }
 
+// Local image caching functions
+function getLocalImageCache() {
+  try {
+    const cached = localStorage.getItem(LOCAL_IMAGE_CACHE_KEY);
+    if (cached) {
+      const cacheData = JSON.parse(cached);
+      // Check if cache version matches current version
+      if (cacheData.version === IMAGE_CACHE_VERSION) {
+        console.log('✅ Local image cache is valid');
+        return cacheData.images;
+      } else {
+        console.log('🔄 Local image cache version mismatch, clearing...');
+        clearImageCache();
+        return null;
+      }
+    }
+    return null;
+  } catch (error) {
+    console.error('Error reading local image cache:', error);
+    return null;
+  }
+}
+
+function setLocalImageCache(images) {
+  try {
+    const cacheData = {
+      version: IMAGE_CACHE_VERSION,
+      timestamp: Date.now(),
+      images: images
+    };
+    localStorage.setItem(LOCAL_IMAGE_CACHE_KEY, JSON.stringify(cacheData));
+    console.log('💾 Local image cache updated with', images.length, 'images');
+  } catch (error) {
+    console.error('Error setting local image cache:', error);
+  }
+}
+
+// Function to get all available slideshow images (local + fallback)
+function getAllAvailableImages() {
+  // First try to get from local cache
+  const cachedImages = getLocalImageCache();
+  if (cachedImages && cachedImages.length > 0) {
+    console.log('📱 Using cached local images:', cachedImages.length);
+    return cachedImages;
+  }
+  
+  // If no cache, use fallback images
+  const fallbackImages = getFallbackImages();
+  console.log('📱 Using fallback images:', fallbackImages.length);
+  
+  // Cache the fallback images for future use
+  setLocalImageCache(fallbackImages);
+  
+  // Preload images for better performance
+  preloadImages(fallbackImages);
+  
+  return fallbackImages;
+}
+
+
+
 // Force refresh images (bypass cache)
 async function forceRefreshImages() {
-  console.log('🔄 Force refreshing images from GitHub...');
+  console.log('🔄 Force refreshing images...');
   clearImageCache();
-  const freshImages = await fetchGitHubImages();
-  if (freshImages.length > 0) {
-    availableImages = freshImages.map(img => img.url);
-    console.log(`Updated slideshow with ${availableImages.length} fresh images`);
-    if (availableImages.length > 0) {
+  
+  try {
+    // Try GitHub API first
+    const freshImages = await fetchGitHubImages();
+    if (freshImages.length > 0) {
+      availableImages = freshImages.map(img => img.url);
+      console.log(`✅ Updated slideshow with ${availableImages.length} fresh GitHub images`);
+      // Cache the new images
+      setLocalImageCache(availableImages);
       currentIdx = 0;
       showImage(currentIdx);
+      return freshImages;
     }
+  } catch (error) {
+    console.log('⚠️ GitHub API failed during refresh, using fallback');
   }
-  return freshImages;
+  
+  // Fallback to default images
+  availableImages = getFallbackImages();
+  if (availableImages.length > 0) {
+    console.log(`📱 Using ${availableImages.length} fallback images after refresh`);
+    setLocalImageCache(availableImages);
+    currentIdx = 0;
+    showImage(currentIdx);
+  }
+  
+  return availableImages;
+}
+
+// Function to manually refresh local cache
+function refreshLocalCache() {
+  console.log('🔄 Manually refreshing local image cache...');
+  clearImageCache();
+  const images = getAllAvailableImages();
+  if (images && images.length > 0) {
+    availableImages = images;
+    currentIdx = 0;
+    showImage(currentIdx);
+    console.log('✅ Local cache refreshed successfully');
+  }
 }
 
 // === CHROMECAST RECEIVER OPTIMIZATION ===
@@ -446,38 +542,53 @@ async function refreshImagesAfterRotation() {
   }
 }
 
-// Initialize slideshow with GitHub images
+// Initialize slideshow with smart local caching
 async function initializeSlideshow() {
   try {
-    console.log('Initializing slideshow with GitHub images...');
+    console.log('Initializing slideshow with smart local caching...');
     
-    // Clear cache to ensure fresh data
-    clearImageCache();
+    // Try to get images from local cache first
+    let images = getAllAvailableImages();
     
-    const githubImages = await getCachedOrFetchImages();
+    // If we have cached images, use them
+    if (images && images.length > 0) {
+      availableImages = images;
+      console.log(`✅ Using ${availableImages.length} cached local images`);
+      currentIdx = 0;
+      showImage(currentIdx);
+      return;
+    }
     
-    if (githubImages.length > 0) {
-      availableImages = githubImages.map(img => img.url);
-      console.log(`Updated slideshow with ${availableImages.length} images from GitHub`);
-      
-      // Start slideshow if we have images
-      if (availableImages.length > 0) {
+    // If no cache, try GitHub API as fallback
+    console.log('🔄 No local cache, trying GitHub API...');
+    try {
+      const githubImages = await getCachedOrFetchImages();
+      if (githubImages.length > 0) {
+        availableImages = githubImages.map(img => img.url);
+        console.log(`✅ Got ${availableImages.length} images from GitHub`);
+        // Cache these for future use
+        setLocalImageCache(availableImages);
         currentIdx = 0;
         showImage(currentIdx);
+        return;
       }
-    } else {
-      console.log('No images found in GitHub repository');
-      // Fallback to default images if needed
-      availableImages = getFallbackImages();
-      if (availableImages.length > 0) {
-        currentIdx = 0;
-        showImage(currentIdx);
-      }
+    } catch (githubError) {
+      console.log('⚠️ GitHub API failed, using fallback images');
+    }
+    
+    // Final fallback to default images
+    availableImages = getFallbackImages();
+    if (availableImages.length > 0) {
+      console.log(`📱 Using ${availableImages.length} fallback images`);
+      // Cache these for future use
+      setLocalImageCache(availableImages);
+      currentIdx = 0;
+      showImage(currentIdx);
     }
     
   } catch (error) {
     console.error('Error initializing slideshow:', error);
-    // Fallback to default images
+    // Emergency fallback
     availableImages = getFallbackImages();
     if (availableImages.length > 0) {
       currentIdx = 0;
@@ -486,13 +597,18 @@ async function initializeSlideshow() {
   }
 }
 
-setInterval(nextImage, 10000); // 10 seconds
+setInterval(nextImage, 5000); // 5 seconds
 
 // Function to get fallback images with correct paths for current environment
 function getFallbackImages() {
   return [
     getImagePath('imam_schedule.jpg'),
     getImagePath('sundayschool.jpg'),
+    getImagePath('fall retreat.jpg'),
+    getImagePath('hajj dinner.jpg'),
+    getImagePath('membership drive.jpg'),
+    getImagePath('ping pong.jpg'),
+    getImagePath('winter fundraiser.jpg')
   ];
 }
 
@@ -819,6 +935,27 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('📱 Viewport:');
       console.log('  - width:', window.innerWidth);
       console.log('  - height:', window.innerHeight);
+      
+      // Check cache status
+      console.log('💾 Cache Status:');
+      const cacheInfo = getCacheInfo();
+      if (cacheInfo) {
+        console.log('  - GitHub Cache Age:', cacheInfo.age + ' minutes');
+        console.log('  - GitHub Cache Expires In:', cacheInfo.expiresIn + ' minutes');
+        console.log('  - GitHub Cache Image Count:', cacheInfo.imageCount);
+      } else {
+        console.log('  - GitHub Cache: None');
+      }
+      
+      const localCache = getLocalImageCache();
+      if (localCache) {
+        console.log('  - Local Cache: Available with', localCache.length, 'images');
+      } else {
+        console.log('  - Local Cache: None');
+      }
+      
+      console.log('  - Available Images:', availableImages.length);
+      console.log('  - Current Image Index:', currentIdx);
     });
   }
 });
