@@ -32,6 +32,35 @@ body {
   box-sizing: border-box;
 }
 
+/* Safe area and overflow fixes for TV displays */
+html, body {
+  margin: 0;
+  padding: 0;
+  background: black;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+
+/* TV-specific CSS reset to prevent layout shifts */
+@media (min-width: 1920px) {
+  html, body {
+    /* Prevent TV from adjusting viewport after load */
+    overflow: hidden !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  
+  /* Ensure no late layout shifts */
+  * {
+    transform: translateZ(0); /* Force hardware acceleration */
+    backface-visibility: hidden; /* Prevent flickering */
+  }
+}
+
 /* Main layout - Three rows with flexible sizing */
 .main-layout {
   display: flex;
@@ -39,7 +68,7 @@ body {
   gap: var(--row-gap);
   max-width: min(1400px, 95vw);
   margin: 0 auto;
-  min-height: 100vh;
+  min-height: 100%; /* Use 100% instead of 100vh to avoid TV viewport issues */
   justify-content: center; /* Center the content vertically for uniform spacing */
   padding: clamp(8px, 1vw, 15px) 0; /* Add margin boundaries for top/bottom rows */
 }
