@@ -316,20 +316,7 @@ function getAllAvailableImages() {
   return fallbackImages;
 }
 
-// Function to preload images for better performance
-function preloadImages(imageUrls) {
-  console.log('🔄 Preloading images for better performance...');
-  imageUrls.forEach((url, index) => {
-    const img = new Image();
-    img.onload = () => {
-      console.log(`✅ Preloaded image ${index + 1}/${imageUrls.length}:`, url);
-    };
-    img.onerror = () => {
-      console.warn(`⚠️ Failed to preload image ${index + 1}/${imageUrls.length}:`, url);
-    };
-    img.src = url;
-  });
-}
+
 
 // Force refresh images (bypass cache)
 async function forceRefreshImages() {
@@ -610,7 +597,7 @@ async function initializeSlideshow() {
   }
 }
 
-setInterval(nextImage, 10000); // 10 seconds
+setInterval(nextImage, 5000); // 5 seconds
 
 // Function to get fallback images with correct paths for current environment
 function getFallbackImages() {
