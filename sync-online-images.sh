@@ -15,12 +15,12 @@ if [ $? -eq 0 ]; then
     # Check if there are new images
     echo "🔍 Checking for new images..."
     
-    # Get list of images in main repo
-    MAIN_IMAGES=$(find images/slideshow -name "*.jpg" -o -name "*.png" -o -name "*.jpeg" | sort)
+    # Get list of images in main repo (all subdirectories)
+    MAIN_IMAGES=$(find images/ -name "*.jpg" -o -name "*.png" -o -name "*.jpeg" | sort)
     
-    # Get list of images in dist (if it exists)
-    if [ -d "dist/images/slideshow" ]; then
-        DIST_IMAGES=$(find dist/images/slideshow -name "*.jpg" -o -name "*.png" -o -name "*.jpeg" | sort)
+    # Get list of images in dist (if it exists, all subdirectories)
+    if [ -d "dist/images" ]; then
+        DIST_IMAGES=$(find dist/images/ -name "*.jpg" -o -name "*.png" -o -name "*.jpeg" | sort)
     else
         DIST_IMAGES=""
     fi

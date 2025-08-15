@@ -5,11 +5,35 @@
 
 echo "🔄 Starting image sync process..."
 
-# Check if there are any changes in images directory
-if git diff --quiet images/; then
-    echo "✅ No changes detected in images/ directory"
-else
+# Check if there are any changes in images directory and all subdirectories recursively
+echo "🔍 Checking for changes in images directory and all subdirectories recursively..."
+
+# Get all subdirectories under images/
+SUBDIRS=$(find images/ -type d 2>/dev/null | sort)
+
+# Check for changes in main images directory and all subdirectories
+CHANGES_DETECTED=false
+
+# Check main images directory
+if ! git diff --quiet images/; then
     echo "📸 Changes detected in images/ directory"
+    CHANGES_DETECTED=true
+fi
+
+# Check each subdirectory
+for subdir in $SUBDIRS; do
+    if [ "$subdir" != "images/" ]; then  # Skip the root images directory (already checked)
+        if ! git diff --quiet "$subdir"; then
+            echo "📸 Changes detected in $subdir"
+            CHANGES_DETECTED=true
+        fi
+    fi
+done
+
+if [ "$CHANGES_DETECTED" = false ]; then
+    echo "✅ No changes detected in images/ directory or any subdirectories"
+else
+    echo "📸 Changes detected in images directory or subdirectories"
     
     # Build the project (this copies images to dist/)
     echo "🔨 Building project..."
