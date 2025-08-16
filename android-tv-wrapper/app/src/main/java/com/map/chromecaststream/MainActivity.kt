@@ -45,7 +45,22 @@ class MainActivity : AppCompatActivity() {
         setupWebView()
         
         // Load the MAP Chromecast Stream app
-        webView.loadUrl("https://itsecretary-map.github.io/chromecast_stream/")
+        // URL is automatically set based on build type
+        // Debug builds use localhost, Release builds use production URL
+        val webUrl = BuildConfig.WEB_URL
+        val environment = BuildConfig.ENVIRONMENT
+        
+        // Runtime detection as backup
+        val isDebugMode = BuildConfig.DEBUG
+        val runtimeUrl = if (isDebugMode) {
+            "http://192.168.40.6:4173/chromecast_stream/"
+        } else {
+            "https://itsecretary-map.github.io/chromecast_stream/"
+        }
+        
+        println("🌐 Loading app from: $webUrl (Environment: $environment)")
+        println("🔧 Debug mode: $isDebugMode, Runtime URL: $runtimeUrl")
+        webView.loadUrl(webUrl)
         
         // Set up back press handling for modern Android
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {

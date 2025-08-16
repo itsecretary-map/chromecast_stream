@@ -30,6 +30,10 @@ html, body {
   gap: 0;
   padding: 0;
   overflow: hidden;
+  /* Force strict height containment */
+  max-height: 100vh;
+  min-height: 100vh;
+  position: relative;
 }
 
 /* Row 1: Header */
@@ -50,12 +54,18 @@ html, body {
 /* Row 2: Content Row - Three Columns */
 .content-row {
   height: calc(100vh - 140px);
-  display: grid;
-  grid-template-columns: 25% 50% 25%;
+  max-height: calc(100vh - 140px);
+  display: flex;
+  flex-direction: row;
   gap: 10px;
-  align-items: stretch;
   padding: 0 10px;
   overflow: hidden;
+  position: relative;
+  /* Force height containment with flexbox */
+  flex-shrink: 0;
+  flex-grow: 0;
+  /* Prevent any overflow */
+  contain: layout style;
 }
 
 /* Column 1: Prayer Times */
@@ -67,6 +77,10 @@ html, body {
   display: flex;
   flex-direction: column;
   height: 100%;
+  max-height: 100%;
+  flex: 1;
+  min-width: 0;
+  contain: layout style;
 }
 
 .prayer-times .prayer-section {
@@ -109,6 +123,10 @@ html, body {
   align-items: center;
   justify-content: center;
   height: 100%;
+  max-height: 100%;
+  flex: 2;
+  min-width: 0;
+  contain: layout style;
 }
 
 .slideshow img {
@@ -126,6 +144,12 @@ html, body {
   display: flex;
   flex-direction: column;
   height: 100%;
+  max-height: 100%;
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  /* Prevent overflow beyond boundaries */
+  contain: layout style;
 }
 
 .qr-list {
@@ -134,6 +158,12 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  /* Force strict height containment */
+  min-height: 0;
+  max-height: 100%;
+  position: relative;
+  /* Prevent any overflow */
+  contain: layout style;
 }
 
 .qr-wrapper {
@@ -204,6 +234,8 @@ html, body {
     height: calc(100vh - 120px);
     gap: 5px;
     padding: 0 5px;
+    /* Ensure grid items don't exceed container */
+    grid-template-rows: 1fr;
   }
   
   .prayer-times,
@@ -227,6 +259,11 @@ html, body {
     font-size: 12px;
   }
   
+  .qr-codes {
+    min-height: 0;
+    max-height: 100%;
+  }
+  
   .ayats {
     height: 50px;
     font-size: 12px;
@@ -247,6 +284,8 @@ html, body {
     height: calc(100vh - 200px);
     gap: 20px;
     padding: 0 20px;
+    /* Ensure grid items don't exceed container */
+    grid-template-rows: 1fr;
   }
   
   .prayer-times,
@@ -273,6 +312,11 @@ html, body {
   
   .qr-img {
     max-height: 150px;
+  }
+  
+  .qr-codes {
+    min-height: 0;
+    max-height: 100%;
   }
   
   .ayats {
