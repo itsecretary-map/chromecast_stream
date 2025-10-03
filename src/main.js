@@ -725,13 +725,12 @@ setInterval(nextImage, 8000); // 8 seconds
 // Function to get fallback images with correct paths for current environment
 function getFallbackImages() {
   return [
+    getImagePath('art-competition.jpg'),
+    getImagePath('coat-drive.jpg'),
+    getImagePath('fall-food-drive.jpg'),
     getImagePath('imam_schedule.jpg'),
-    getImagePath('sundayschool.jpg'),
-    getImagePath('fall retreat.jpg'),
-    getImagePath('hajj dinner.jpg'),
     getImagePath('membership drive.jpg'),
-    getImagePath('ping pong.jpg'),
-    getImagePath('winter fundraiser.jpg')
+    getImagePath('winter-fundraiser.jpg')
   ];
 }
 
