@@ -726,11 +726,7 @@ setInterval(nextImage, 8000); // 8 seconds
 function getFallbackImages() {
   return [
     getImagePath('coat-drive.jpg'),
-    getImagePath('dont-trick.jpg'),
     getImagePath('imams-schedule.png'),
-    getImagePath('IMG_2075 - anis rigana-COLLAGE.jpg'),
-    getImagePath('IMG_8242 - Jo-COLLAGE.jpg'),
-    getImagePath('IMG_8302 - Jo-COLLAGE.jpg'),
     getImagePath('membership drive.jpg'),
     getImagePath('Untitled design - Kehkeshan Shah-COLLAGE.jpg'),
     getImagePath('Untitled design-4 - Aalaa Alshareef-COLLAGE.jpg'),
