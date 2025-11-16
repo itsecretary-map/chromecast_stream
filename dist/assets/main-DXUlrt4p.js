@@ -185,7 +185,7 @@ async function fetchGitHubImages() {
   try {
     const apiUrl = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/${githubConfig.folder}`;
     console.log('Fetching images from GitHub:', apiUrl);
-    
+  
     const response = await fetch(apiUrl);
     if (!response.ok) {
       if (response.status === 404) {
@@ -725,13 +725,12 @@ setInterval(nextImage, 8000); // 8 seconds
 // Function to get fallback images with correct paths for current environment
 function getFallbackImages() {
   return [
-    getImagePath('imam_schedule.jpg'),
-    getImagePath('sundayschool.jpg'),
-    getImagePath('fall retreat.jpg'),
-    getImagePath('hajj dinner.jpg'),
+    getImagePath('coat-drive.jpg'),
+    getImagePath('imams-schedule.png'),
     getImagePath('membership drive.jpg'),
-    getImagePath('ping pong.jpg'),
-    getImagePath('winter fundraiser.jpg')
+    getImagePath('Untitled design - Kehkeshan Shah-COLLAGE.jpg'),
+    getImagePath('Untitled design-4 - Aalaa Alshareef-COLLAGE.jpg'),
+    getImagePath('winter-fundraiser.jpg')
   ];
 }
 
