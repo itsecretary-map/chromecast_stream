@@ -908,7 +908,7 @@ function renderQrCodes() {
           const getImageFileName = (key) => {
             switch(key) {
               case 'mapWebsite': return 'mapitt.png';
-              case 'communityWhatsApp': return 'whatsapp_group.png';
+              case 'communityWhatsApp': return 'map-whatsapp.png';
               default: return 'mapitt.png';
             }
           };
