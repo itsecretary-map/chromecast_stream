@@ -105,12 +105,12 @@ export function getQrImageUrls() {
   if (isGitHubPages) {
     return {
       mapWebsite: '/chromecast_stream/images/qr-codes/mapitt.png',
-      communityWhatsApp: '/chromecast_stream/images/qr-codes/whatsapp_group.png',
+      communityWhatsApp: '/chromecast_stream/images/qr-codes/map-whatsapp.png',
     };
   }
   return {
     mapWebsite: './images/qr-codes/mapitt.png',
-    communityWhatsApp: './images/qr-codes/whatsapp_group.png',
+    communityWhatsApp: './images/qr-codes/map-whatsapp.png',
   };
 }
 
