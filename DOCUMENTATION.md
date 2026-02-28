@@ -45,7 +45,7 @@
 ### 3. **QR Code Display**
 - Displays community QR codes for:
   - MAP Website (`mapitt.png`)
-  - Community WhatsApp Group (`map-whatsapp.png`)
+  - Community WhatsApp Group (`whatsapp.png`)
 - Dynamic path resolution for local and production environments
 - Automatic retry mechanism for failed image loads
 
